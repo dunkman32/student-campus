@@ -5,11 +5,15 @@ import {actions, selectors} from '../../modules/Main'
 import {selectors as authSelectors} from '../../modules/Auth'
 import {SyncOutlined,} from '@ant-design/icons';
 import styled from "styled-components";
-import {Button, Input, Tooltip, Typography } from "antd";
+import {Button, Input, Tooltip, Typography} from "antd";
 import TableComponent from './table'
 import Header from '../Header'
 import SignOut from '../SignOut';
-const { Title } = Typography;
+
+import Table from '../students/table'
+import AddModal from "../students/add";
+
+const {Title} = Typography;
 const {Search} = Input;
 
 const HeadDiv = styled.div`
@@ -48,8 +52,8 @@ const Index = () => {
 
     return (
         <div className="App">
-            <Header />
-            <StyledTitle  type="secondary" level={4}>Welcome back {user.displayName}</StyledTitle>
+            <Header/>
+            <StyledTitle type="secondary" level={4}>Welcome back {user.displayName}</StyledTitle>
             <HeadDiv>
                 <StyledSearch
                     placeholder="add name"
@@ -62,12 +66,14 @@ const Index = () => {
                         dispatch(actions.get.request())
                     }} icon={<SyncOutlined/>}/>
                 </Tooltip>
-                <SignOut />
+                <AddModal />
+                <SignOut/>
             </HeadDiv>
             <hr/>
             {
                 rows && <TableComponent data={rows}/>
             }
+            <Table/>
         </div>
     );
 }
