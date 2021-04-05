@@ -4,6 +4,7 @@ import {
     isArray,
     isObject
 } from 'lodash'
+import {format, isValid} from "date-fns";
 
 export const getAction = (type, payload = {}) =>
     ({
@@ -31,4 +32,12 @@ export const getProp = (fn, defaultValue) => {
     } catch (err) {
         return defaultValue
     }
+}
+
+export const formatDate = (d, f) => {
+    const tmpDate = new Date(d)
+    if (isValid(tmpDate)) {
+        return format(tmpDate, f)
+    }
+    return 'undefined'
 }

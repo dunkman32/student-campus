@@ -9,7 +9,6 @@ const AddModal = () => {
 
     const [visible, setVisible] = useState(false);
     const onCreate = (values: any) => {
-        console.log('Received values of form: ', values);
         setVisible(false);
         addFilm(values)
     };
@@ -59,7 +58,7 @@ const AddModal = () => {
                     <Form.Item name={'name'} label="სახელი, გვარი">
                         <Input />
                     </Form.Item>
-                    <Form.Item name={'ID'} label="პირადი ნომერი">
+                    <Form.Item name={'idNumber'} label="პირადი ნომერი">
                         <Input/>
                     </Form.Item>
                     <Form.Item name={'no'} label="ბინა">

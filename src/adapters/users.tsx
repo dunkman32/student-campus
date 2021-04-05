@@ -26,7 +26,7 @@ export const useStudentsStream = () => {
 
 interface Students  {
     name: string,
-    ID: string,
+    idNumber: string,
     no: number,
     campus: string,
     birth: string,
@@ -35,3 +35,6 @@ interface Students  {
 
 export const addStudent = (data: Students) => COLLECTION.add(data)
 
+export const removeFilm = (id: string) => {
+    return COLLECTION.doc(id).delete()
+}
