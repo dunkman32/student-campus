@@ -1,16 +1,8 @@
-import React, {useState} from 'react';
-import {
-    Modal,
-    Button,
-    Form,
-    Input,
-    Select,
-    DatePicker,
-    InputNumber,
-} from 'antd';
+import React, {useCallback, useState} from 'react';
+import {Button, DatePicker, Form, Input, InputNumber, Modal, Select,} from 'antd';
 import {UserAddOutlined} from '@ant-design/icons'
+import {addStudent} from '../../adapters/users';
 
-type SizeType = Parameters<typeof Form>[0]['size'];
 
 const AddModal = () => {
     const [form] = Form.useForm();
@@ -19,6 +11,7 @@ const AddModal = () => {
     const onCreate = (values: any) => {
         console.log('Received values of form: ', values);
         setVisible(false);
+        addFilm(values)
     };
 
     const submit = () => {
@@ -32,6 +25,18 @@ const AddModal = () => {
                 console.log('Validate Failed:', info);
             })
     }
+    const addFilm = useCallback((o) => {
+        const student = {
+            ...o,
+            birth: o.birth.toString(),
+            createdAt: new Date().getTime()
+        }
+        addStudent(student).then(() => {
+            console.log('added')
+        }).catch((e) => {
+            console.log(e, 'denied')
+        })
+    }, [])
 
     return (
         <>

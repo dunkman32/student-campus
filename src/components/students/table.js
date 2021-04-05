@@ -3,33 +3,7 @@ import {Table, Input, Button, Space} from 'antd';
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
 import styled from "styled-components";
-
-const data = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Joe Black',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Jim Green',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-    {
-        key: '4',
-        name: 'Jim Red',
-        age: 32,
-        address: 'London No. 2 Lake Park',
-    },
-];
+import {useStudentsStream} from "../../adapters/users";
 
 const StyledTable = styled(Table)`
   width: 80%;
@@ -37,6 +11,8 @@ const StyledTable = styled(Table)`
 `
 
 const StudentsTable = () => {
+    const rows = useStudentsStream()
+    console.log(rows, 'ssss');
     const [searchText, setSearchText] = useState('')
     const [searchedColumn, setSearchedColumn] = useState('')
     const getColumnSearchProps = dataIndex => ({
@@ -108,8 +84,7 @@ const StudentsTable = () => {
     const [info, setInfo] = useState('')
 
     const handleChange = (pagination, filters, sorter) => {
-        console.log(sorter.field, sorter.field === 'age');
-        if(sorter.field === 'age') {
+        if(sorter.field === 'birth') {
             setOrder(sorter.order)
             setInfo(sorter.field)
         }
@@ -124,22 +99,34 @@ const StudentsTable = () => {
             ...getColumnSearchProps('name'),
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
             width: '20%',
-            sorter: (a, b) => a.age - b.age,
-            sortOrder: info === 'age' && order,
-            ellipsis: true,
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-            ...getColumnSearchProps('address'),
+            title: 'No',
+            dataIndex: 'no',
+            key: 'no',
+            width: '5%',
         },
+        {
+            title: 'campus',
+            dataIndex: 'campus',
+            key: 'campus',
+            width: '25%',
+        },
+        {
+            title: 'birth',
+            dataIndex: 'birth',
+            key: 'birth',
+            width: '20%',
+            sorter: (a, b) => a.birth - b.birth,
+            sortOrder: info === 'birth' && order,
+            ellipsis: true,
+        }
     ];
-    return <StyledTable columns={columns} dataSource={data} onChange={handleChange}/>;
+    return <StyledTable columns={columns} dataSource={rows} onChange={handleChange}/>;
 }
 
 export default StudentsTable
