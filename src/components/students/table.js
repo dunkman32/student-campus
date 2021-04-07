@@ -1,10 +1,11 @@
 import React, {useCallback, useState} from 'react'
 import {Table, Input, Button, Space, Popconfirm, Tag} from 'antd';
 import Highlighter from 'react-highlight-words';
-import {SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined, DeleteTwoTone} from '@ant-design/icons';
 import styled from "styled-components";
 import {useStudentsStream, removeFilm} from "../../adapters/users";
 import {formatDate} from '../../helpers'
+import AddModal from './add'
 
 const StyledTable = styled(Table)`
   width: 80%;
@@ -13,9 +14,12 @@ const StyledTable = styled(Table)`
 
 const generateTagColor = (tag) => {
     switch (tag) {
-        case 'პირველი': return '#36cfc9'
-        case 'მეორე': return '#b37feb'
-        default: return '#f759ab'
+        case 'პირველი':
+            return '#36cfc9'
+        case 'მეორე':
+            return '#b37feb'
+        default:
+            return '#f759ab'
     }
 }
 
@@ -93,7 +97,7 @@ const StudentsTable = () => {
     };
 
     const handleChange = (pagination, filters, sorter) => {
-        if(sorter.field === 'birth') {
+        if (sorter.field === 'birth') {
             setOrder(sorter.order)
             setInfo(sorter.field)
         }
@@ -154,11 +158,14 @@ const StudentsTable = () => {
             key: 'action',
             width: '15%',
             render: (_, row) => (
-                <Popconfirm key={row.id} title="Sure to delete?" onConfirm={handleDelete(row.id)}>
-                    <Button>
-                        delete
-                    </Button>
-                </Popconfirm>
+                <>
+                    <AddModal student={row}/>
+                    <Popconfirm key={row.id} title="Sure to delete?" onConfirm={handleDelete(row.id)}>
+                        <Button>
+                            <DeleteTwoTone twoToneColor="#f5222d"/>
+                        </Button>
+                    </Popconfirm>
+                </>
             )
         },
     ];

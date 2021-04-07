@@ -1,17 +1,36 @@
-import React, {useCallback, useState} from 'react';
-import {Button, DatePicker, Form, Input, InputNumber, Modal, Select,} from 'antd';
-import {UserAddOutlined} from '@ant-design/icons'
-import {addStudent} from '../../adapters/users';
-
-
-const AddModal = () => {
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Button, DatePicker, Form, Input, InputNumber, Modal, Select} from 'antd';
+import {EditTwoTone, FileAddTwoTone} from '@ant-design/icons'
+import {addStudent, updateStudent} from '../../adapters/users';
+import moment from "moment";
+import {omit} from 'lodash'
+const AddModal = ({student}: { student?: any }) => {
     const [form] = Form.useForm();
-
+    const isEdit = useMemo(() => Boolean(student), [student])
     const [visible, setVisible] = useState(false);
     const onCreate = (values: any) => {
         setVisible(false);
-        addFilm(values)
+        if(isEdit) {
+            update({
+                ...student,
+                ...values,
+            })
+        } else {
+            add(values)
+        }
     };
+
+    useEffect(() => {
+        if (form && visible && student) {
+            form.setFieldsValue({
+                name: student.name,
+                idNumber: student.idNumber,
+                no: student.no,
+                campus: student.campus,
+                birth: moment(student.birth)
+            })
+        }
+    }, [form, visible, student])
 
     const submit = () => {
         form
@@ -24,7 +43,7 @@ const AddModal = () => {
                 console.log('Validate Failed:', info);
             })
     }
-    const addFilm = useCallback((o) => {
+    const add = useCallback((o) => {
         const student = {
             ...o,
             birth: o.birth.toString(),
@@ -37,10 +56,20 @@ const AddModal = () => {
         })
     }, [])
 
+    const update = useCallback((student) => {
+        updateStudent(omit(student, ['birth'])).then(() => {
+            console.log('update')
+        }).catch((e) => {
+            console.log(e, 'denied')
+        })
+    }, [])
+
     return (
         <>
-            <Button type="primary" onClick={() => setVisible(true)}>
-                <UserAddOutlined/>
+            <Button onClick={() => setVisible(true)}>
+                {
+                    isEdit ? <EditTwoTone twoToneColor="#fadb14"/> : <FileAddTwoTone twoToneColor="#52c41a"/>
+                }
             </Button>
             <Modal
                 title="Add Student"
@@ -56,7 +85,7 @@ const AddModal = () => {
                     layout="horizontal"
                 >
                     <Form.Item name={'name'} label="სახელი, გვარი">
-                        <Input />
+                        <Input/>
                     </Form.Item>
                     <Form.Item name={'idNumber'} label="პირადი ნომერი">
                         <Input/>
@@ -71,8 +100,8 @@ const AddModal = () => {
                             <Select.Option value="ლისი">ლისი</Select.Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item name={'birth'} label="დაბადებული">
-                        <DatePicker/>
+                    <Form.Item  name={'birth'} label="დაბადებული">
+                        <DatePicker disabled={isEdit}/>
                     </Form.Item>
                 </Form>
             </Modal>
