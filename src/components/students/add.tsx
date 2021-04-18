@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, DatePicker, Form, Input, InputNumber, Modal, Select } from 'antd';
-import { EditTwoTone, FileAddTwoTone } from '@ant-design/icons'
-import { addStudent, updateStudent, addUserWithEmail, uploadFile } from '../../adapters/users';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Button, DatePicker, Form, Input, InputNumber, Modal, Select} from 'antd';
+import {EditTwoTone, FileAddTwoTone} from '@ant-design/icons'
+import {addUserWithEmail, updateStudent} from '../../adapters/users';
 import moment from "moment";
-import { omit } from 'lodash'
+import {omit} from 'lodash'
 
 const AddModal = ({ student }: { student?: any }) => {
     const [form] = Form.useForm();
@@ -50,25 +50,13 @@ const AddModal = ({ student }: { student?: any }) => {
     const add = useCallback((o) => {
         const student = {
             ...o,
+            file,
             birth: o.birth.toString(),
             createdAt: new Date().getTime()
         }
-        addStudent(student).then(() => {
-            return uploadFile(student.idNumber, file).then((r) => {
-                console.log(r, 123123123)
-            }).catch((e) => console.log(e))
-        }).then(() => {
-            return addUserWithEmail(student.email, student.idNumber)
-                .then((userCredential) => {
-                    // Signed in 
-                    var user = userCredential.user;
-                })
-                .catch((error) => {
-                    console.log(error.message)
-                });
-        }).catch((e) => {
-            console.log(e, 'denied')
-        })
+        addUserWithEmail(student).then((usr) => {
+            console.log(usr, 'success');
+        }).catch((err)=> console.log(err))
     }, [file])
 
     const update = useCallback((student) => {
@@ -80,12 +68,9 @@ const AddModal = ({ student }: { student?: any }) => {
     }, [])
 
     const change = (e: any) => {
-        var files = e.target.files;
+        const files = e.target.files;
         console.log(files);
         setFile(files[0])
-        // return uploadFile(files[0]).then((r) => {
-        //     console.log(r, 123123123)
-        // }).catch((e) => console.log(e))
       }
 
     return (

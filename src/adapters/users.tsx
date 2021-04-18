@@ -1,13 +1,14 @@
-import { firestore, auth, storage } from "./helpers"
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { createGlobalStyle } from "styled-components";
+import {firestore, auth, storage} from "./helpers"
+import {useCollectionData} from 'react-firebase-hooks/firestore';
+import {createGlobalStyle} from "styled-components";
+import {omit} from 'lodash'
 const COLLECTION = firestore.collection("students")
 
 export const students = () => {
     return COLLECTION
 }
-export const removeStudent = (id: string) => {
-    return COLLECTION.doc(id).delete()
+export const readUserById = (id: string) => {
+    return COLLECTION.doc(id).get()
 }
 
 interface DataType {
@@ -21,7 +22,7 @@ interface DataType {
 
 export const useStudentsStream = () => {
     const query = COLLECTION.orderBy('createdAt').limit(25);
-    return useCollectionData<DataType>(query, { idField: 'id' })[0]
+    return useCollectionData<DataType>(query, {idField: 'id'})[0]
 }
 
 interface Students {
@@ -31,11 +32,27 @@ interface Students {
     no: number,
     campus: string,
     birth: string,
-    createdAt: number
+    createdAt: number,
+    file: any
 };
 
-export const addUserWithEmail = (e: string, p: string) => {
-    return auth.createUserWithEmailAndPassword(e, p)
+export const addUserWithEmail = async (student: Students) => {
+    try {
+        const {user}: any = await auth.createUserWithEmailAndPassword(student.email, student.idNumber)
+        const uid = user.uid
+        const img = await storage.child(`students/${uid}.jpg`).put(student.file)
+        const userOBJ = {
+            ...omit(student, ['file']),
+            uid,
+            role: 'student'
+        }
+        const savedUsr = await COLLECTION.doc(uid).set(userOBJ)
+        console.log(img, savedUsr, 'auth')
+        return savedUsr
+    } catch (e) {
+        console.log(e)
+    }
+
 };
 
 
@@ -47,10 +64,10 @@ export const uploadFile = (name: string, file: any) => {
 export const addStudent = (data: Students) => {
     return COLLECTION.add(data)
 }
+
 export const removeFilm = (id: string) => {
     return COLLECTION.doc(id).delete()
 }
-
 
 export const updateStudent = (data: any) => {
     let prod = COLLECTION.doc(data.id)
