@@ -1,15 +1,39 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {Table, Input, Button, Space, Popconfirm, Tag} from 'antd';
 import Highlighter from 'react-highlight-words';
-import {SearchOutlined, DeleteTwoTone} from '@ant-design/icons';
+import {
+    SearchOutlined,
+    DeleteTwoTone,
+    RightOutlined,
+    LeftSquareTwoTone,
+    RightSquareTwoTone,
+    LeftOutlined
+} from '@ant-design/icons';
 import styled from "styled-components";
-import {useStudentsStream, removeFilm} from "../../adapters/users";
+import {
+    removeFilm,
+    take,
+    prev,
+    next
+} from "../../adapters/users";
 import {formatDate} from '../../helpers'
 import AddModal from './add'
 
 const StyledTable = styled(Table)`
   width: 80%;
   margin: 0 auto;
+`
+
+const Centered = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3rem;
 `
 
 const generateTagColor = (tag) => {
@@ -23,8 +47,50 @@ const generateTagColor = (tag) => {
     }
 }
 
+const size = 10
 const StudentsTable = () => {
-    const rows = useStudentsStream()
+    const [rows, setRows] = useState([])
+
+    const callTake = useCallback(() => {
+        take(size).then(res => {
+            const collection = res.docs.map(o => o.data())
+            if (collection && collection.length) {
+                setRows(collection)
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        callTake()
+    }, [callTake])
+
+    const goPrev = () => {
+        const el = rows[0]
+        if (el) {
+            prev(size, el).then(res => {
+                const collection = res.docs.map(o => o.data())
+                if (collection && collection.length) {
+                    setRows(collection)
+                }
+            }).catch(() => console.log('failed prev'))
+        } else {
+            callTake()
+        }
+    }
+
+    const goNext = () => {
+        const el = rows[rows.length - 1]
+        if (el) {
+            next(size, el).then(res => {
+                const collection = res.docs.map(o => o.data())
+                if (collection && collection.length) {
+                    setRows(collection)
+                }
+            }).catch(() => console.log('failed next'))
+        } else {
+            callTake()
+        }
+    }
 
     const [order, setOrder] = useState('descend')
     const [info, setInfo] = useState('')
@@ -32,7 +98,12 @@ const StudentsTable = () => {
     const [searchedColumn, setSearchedColumn] = useState('')
 
     const getColumnSearchProps = dataIndex => ({
-        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
+        filterDropdown: ({
+                             setSelectedKeys,
+                             selectedKeys,
+                             confirm,
+                             clearFilters
+                         }) => (
             <div style={{padding: 8}}>
                 <Input
                     placeholder={`Search ${dataIndex}`}
@@ -51,7 +122,8 @@ const StudentsTable = () => {
                     >
                         Search
                     </Button>
-                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{width: 90}}>
+                    <Button onClick={() => handleReset(clearFilters)}
+                            size="small" style={{width: 90}}>
                         Reset
                     </Button>
                     <Button
@@ -68,7 +140,8 @@ const StudentsTable = () => {
                 </Space>
             </div>
         ),
-        filterIcon: filtered => <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>,
+        filterIcon: filtered => <SearchOutlined
+            style={{color: filtered ? '#1890ff' : undefined}}/>,
         onFilter: (value, record) =>
             record[dataIndex]
                 ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
@@ -102,15 +175,14 @@ const StudentsTable = () => {
             setInfo(sorter.field)
         }
     };
-
     const handleDelete = useCallback((id) => () => {
         removeFilm(id).then(() => {
+            callTake()
             console.log('removed');
         }).catch((e) => {
             console.log(e, 'error while removing');
         })
-    }, [])
-
+    }, [callTake])
     const columns = [
         {
             title: 'Name',
@@ -159,8 +231,9 @@ const StudentsTable = () => {
             width: '15%',
             render: (_, row) => (
                 <>
-                    <AddModal student={row}/>
-                    <Popconfirm key={row.id} title="Sure to delete?" onConfirm={handleDelete(row.id)}>
+                    <AddModal student={row} callTake={callTake}/>
+                    <Popconfirm key={row.id} title="Sure to delete?"
+                                onConfirm={handleDelete(row.id)}>
                         <Button>
                             <DeleteTwoTone twoToneColor="#f5222d"/>
                         </Button>
@@ -170,7 +243,23 @@ const StudentsTable = () => {
         },
     ];
 
-    return <StyledTable columns={columns} dataSource={rows} pagination={{pageSize: 3}} onChange={handleChange}/>;
+    return <>
+        <StyledTable
+            columns={columns}
+            dataSource={rows}
+            pagination={false}
+            onChange={handleChange}/>
+        <Centered>
+            <div>
+                <Button onClick={goPrev}>
+                    <LeftOutlined onClick={goPrev} twoToneColor="#f5222d"/>
+                </Button>
+                <Button onClick={goNext}>
+                    <RightOutlined onClick={goNext} twoToneColor="#f5222d"/>
+                </Button>
+            </div>
+        </Centered>
+    </>
 }
 
 export default StudentsTable

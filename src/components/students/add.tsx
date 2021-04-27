@@ -5,7 +5,7 @@ import {addUserWithEmail, updateStudent} from '../../adapters/users';
 import moment from "moment";
 import {omit} from 'lodash'
 
-const AddModal = ({ student }: { student?: any }) => {
+const AddModal = ({ student, callTake }: { student?: any, callTake?: any }) => {
     const [form] = Form.useForm();
     const isEdit = useMemo(() => Boolean(student), [student])
     const [visible, setVisible] = useState(false);
@@ -14,6 +14,7 @@ const AddModal = ({ student }: { student?: any }) => {
     const onCreate = (values: any) => {
         setVisible(false);
         if (isEdit) {
+            callTake()
             update({
                 ...student,
                 ...values,
@@ -60,7 +61,10 @@ const AddModal = ({ student }: { student?: any }) => {
     }, [file])
 
     const update = useCallback((student) => {
-        updateStudent(omit(student, ['birth'])).then(() => {
+        console.log(student, 'aaaa');
+        const omitArr = ['birth', 'createdAt']
+        if(!student.file) omitArr.push('file')
+        updateStudent(omit(student, omitArr)).then(() => {
             console.log('update')
         }).catch((e) => {
             console.log(e, 'denied')

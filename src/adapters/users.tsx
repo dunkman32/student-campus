@@ -1,7 +1,7 @@
 import {firestore, auth, storage} from "./helpers"
 import {useCollectionData} from 'react-firebase-hooks/firestore';
-import {createGlobalStyle} from "styled-components";
 import {omit} from 'lodash'
+
 const COLLECTION = firestore.collection("students")
 
 export const students = () => {
@@ -20,10 +20,41 @@ interface DataType {
     displayName: string,
 }
 
-export const useStudentsStream = () => {
-    const query = COLLECTION.orderBy('createdAt').limit(25);
-    return useCollectionData<DataType>(query, {idField: 'id'})[0]
+export const useStudentsStream = (limit: number = 25, first: any, last: any) => {
+    const query = COLLECTION.orderBy('createdAt');
+    console.log(last, first);
+    if (last) {
+        query.startAfter(last.createdAt)
+    }
+    if (first) {
+        query.endBefore(first.createdAt)
+    }
+    const data = useCollectionData<DataType>(query.limit(limit), {idField: 'id'})[0]
+    return {
+        rows: data,
+        first: data && data[0],
+        last: data && data[data.length - 1]
+    }
 }
+
+export const next = (limit: number = 25, last: any = null) => {
+    console.log(last)
+    return COLLECTION.orderBy('createdAt')
+        .startAfter(last.createdAt)
+        .limit(limit)
+        .get()
+}
+
+export const prev = (limit: number = 25, first: any = null) =>
+    COLLECTION.orderBy('createdAt')
+        .endBefore(first.createdAt)
+        .limit(limit)
+        .get()
+
+export const take = (limit: number = 25) =>
+    COLLECTION.orderBy('createdAt')
+        .limit(limit)
+        .get()
 
 interface Students {
     name: string,
@@ -34,7 +65,7 @@ interface Students {
     birth: string,
     createdAt: number,
     file: any
-};
+}
 
 export const addUserWithEmail = async (student: Students) => {
     try {
@@ -52,7 +83,6 @@ export const addUserWithEmail = async (student: Students) => {
     } catch (e) {
         console.log(e)
     }
-
 };
 
 
@@ -70,7 +100,7 @@ export const removeFilm = (id: string) => {
 }
 
 export const updateStudent = (data: any) => {
-    let prod = COLLECTION.doc(data.id)
+    let prod = COLLECTION.doc(data.uid)
     return prod.update(data)
 }
 
