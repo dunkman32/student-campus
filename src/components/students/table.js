@@ -170,7 +170,7 @@ const StudentsTable = () => {
         },
     ];
 
-    return <StyledTable columns={columns} dataSource={rows} onChange={handleChange}/>;
+    return <StyledTable columns={columns} dataSource={rows} pagination={{pageSize: 3}} onChange={handleChange}/>;
 }
 
 export default StudentsTable
