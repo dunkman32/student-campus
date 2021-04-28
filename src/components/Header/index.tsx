@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import {Menu} from 'antd';
+import {Menu, Space} from 'antd';
 import {MailOutlined, AppstoreOutlined} from '@ant-design/icons';
 import SignOut from '../SignOut';
+import AddModal from "../students/add";
 
 
 const MenuContainer = styled.div`
@@ -34,7 +35,12 @@ const Header = () => {
                         Navigation Four - Link
                     </Menu.Item>
             </Menu>
-            <SignOut />
+            <div>
+                <Space>
+                    <AddModal/>
+                    <SignOut />
+                </Space>
+            </div>
         </MenuContainer>
     )
 }

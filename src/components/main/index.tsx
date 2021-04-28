@@ -8,20 +8,14 @@ import {Typography} from "antd";
 import Header from '../Header'
 
 import Table from '../students/table'
-import AddModal from "../students/add";
 
 const {Title} = Typography;
-
-const HeadDiv = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const StyledTitle = styled(Title)`
   text-align: center;
   font-style: italic;
+  color: #001529 !important;
+  margin-top: .5rem
 `;
 
 
@@ -39,9 +33,6 @@ const Index = () => {
             <Header/>
             <StyledTitle type="secondary" level={4}>Welcome back {user.name} your role
                 is {user.role || 'admin'}</StyledTitle>
-            <HeadDiv>
-                <AddModal/>
-            </HeadDiv>
             <hr/>
             <Table/>
         </div>

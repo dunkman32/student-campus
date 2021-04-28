@@ -14,7 +14,8 @@ import {
     removeFilm,
     take,
     prev,
-    next
+    next, 
+    totalSize
 } from "../../adapters/users";
 import {formatDate} from '../../helpers'
 import AddModal from './add'
@@ -47,9 +48,10 @@ const generateTagColor = (tag) => {
     }
 }
 
-const size = 10
+const size = 2
 const StudentsTable = () => {
     const [rows, setRows] = useState([])
+    const [page, setPage] = useState(1)
 
     const callTake = useCallback(() => {
         take(size).then(res => {
@@ -66,6 +68,7 @@ const StudentsTable = () => {
 
     const goPrev = () => {
         const el = rows[0]
+        setPage(page - 1)
         if (el) {
             prev(size, el).then(res => {
                 const collection = res.docs.map(o => o.data())
@@ -80,6 +83,7 @@ const StudentsTable = () => {
 
     const goNext = () => {
         const el = rows[rows.length - 1]
+        setPage(page + 1)
         if (el) {
             next(size, el).then(res => {
                 const collection = res.docs.map(o => o.data())
@@ -251,11 +255,11 @@ const StudentsTable = () => {
             onChange={handleChange}/>
         <Centered>
             <div>
-                <Button onClick={goPrev}>
-                    <LeftOutlined onClick={goPrev} twoToneColor="#f5222d"/>
+                <Button onClick={goPrev} disabled={page === 1}>
+                    <LeftOutlined  twoToneColor="#f5222d"/>
                 </Button>
-                <Button onClick={goNext}>
-                    <RightOutlined onClick={goNext} twoToneColor="#f5222d"/>
+                <Button onClick={goNext} disabled={page * size >= totalSize}>
+                    <RightOutlined  twoToneColor="#f5222d"/>
                 </Button>
             </div>
         </Centered>
