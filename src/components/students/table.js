@@ -210,7 +210,7 @@ const StudentsTable = () => {
             width: '15%',
             render: (_, row) => (
                 <Tag color={generateTagColor(row.campus)} key={row.id}>
-                    {row.campus.toUpperCase()}
+                    {row.campus}
                 </Tag>
             )
         },

@@ -6,7 +6,6 @@ import {selectors as authSelectors} from '../../modules/Auth'
 import styled from "styled-components";
 import {Typography} from "antd";
 import Header from '../Header'
-import SignOut from '../SignOut';
 
 import Table from '../students/table'
 import AddModal from "../students/add";
@@ -42,7 +41,6 @@ const Index = () => {
                 is {user.role || 'admin'}</StyledTitle>
             <HeadDiv>
                 <AddModal/>
-                <SignOut/>
             </HeadDiv>
             <hr/>
             <Table/>
