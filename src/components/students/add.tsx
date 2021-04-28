@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Button, DatePicker, Form, Input, InputNumber, Modal, Select} from 'antd';
+import {Button, DatePicker, Form, Input, InputNumber, Modal, Select, Tooltip} from 'antd';
 import {EditTwoTone, FileAddTwoTone} from '@ant-design/icons'
 import {addUserWithEmail, updateStudent} from '../../adapters/users';
 import moment from "moment";
@@ -79,11 +79,13 @@ const AddModal = ({ student, callTake }: { student?: any, callTake?: any }) => {
 
     return (
         <>
-            <Button onClick={() => setVisible(true)}>
-                {
-                    isEdit ? <EditTwoTone twoToneColor="#fadb14" /> : <FileAddTwoTone twoToneColor="#52c41a" />
-                }
-            </Button>
+            <Tooltip title="Add student" placement="bottom">
+                <Button onClick={() => setVisible(true)}>
+                    {
+                        isEdit ? <EditTwoTone twoToneColor="#fadb14" /> : <FileAddTwoTone twoToneColor="#52c41a" />
+                    }
+                </Button>
+            </Tooltip>
             <Modal
                 title="Add Student"
                 centered
