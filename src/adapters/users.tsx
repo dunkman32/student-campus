@@ -58,19 +58,23 @@ export const prev = (limit: number = 25, first: any = null) => {
         .get()
 }
 export const take = async (limit: number = 25, filterStr: string = '') => {
-    if(filterStr) {
+    const trimmed = filterStr.trim()
+    if(trimmed) {
         const name = COLLECTION
-            .where('name', '==', filterStr)
+            .where('name', '==', trimmed)
             .get()
         const idNumber = COLLECTION
-            .where('idNumber', '==', filterStr)
+            .where('idNumber', '==', trimmed)
+            .get()
+        const email = COLLECTION
+            .where('email', '==', trimmed)
+            .get()
+        const campus = COLLECTION
+            .where('campus', '==', trimmed)
             .get()
 
-        const email = COLLECTION
-            .where('email', '==', filterStr)
-            .get()
-        const [A, B, C] = await Promise.all([name, idNumber, email]);
-        return [...A.docs, ...B.docs, ...C.docs]
+        const [A, B, C, D] = await Promise.all([name, idNumber, email, campus]);
+        return [...A.docs, ...B.docs, ...C.docs, ...D.docs]
     }
     else {
         return COLLECTION

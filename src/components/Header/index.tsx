@@ -54,7 +54,7 @@ const Header = () => {
             </Menu>
             <div>
                 <Space>
-                    <StyledSearch placeholder="იპოვე სტუდენტი (სახელით, ელ. ფოსტით ან პირადი ნომრით)" onSearch={onSearch} enterButton />
+                    <StyledSearch placeholder="იპოვე სტუდენტი (სახელით, ელ. ფოსტით, კორპუსით ან პირადი ნომრით)" onSearch={onSearch} enterButton />
                     <AddModal/>
                     <SignOut />
                 </Space>
