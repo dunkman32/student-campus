@@ -57,10 +57,15 @@ export const prev = (limit: number = 25, first: any = null) => {
         .limitToLast(limit)
         .get()
 }
-export const take = (limit: number = 25) =>
-    COLLECTION.orderBy('createdAt')
+export const take = (limit: number = 25, name: string = '') => {
+    const query = COLLECTION
+    if(name) {
+        query.where('name', '==', name)
+    }
+    return query.orderBy('createdAt')
         .limit(limit)
         .get()
+}
 
 interface Students {
     name: string,

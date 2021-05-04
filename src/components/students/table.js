@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {Table, Input, Button, Space, Popconfirm, Tag} from 'antd';
 import Highlighter from 'react-highlight-words';
+import {selectors, actions} from '../../modules/Users'
 import {
     SearchOutlined,
     DeleteTwoTone,
@@ -19,6 +20,7 @@ import {
 } from "../../adapters/users";
 import {formatDate} from '../../helpers'
 import AddModal from './add'
+import {useDispatch, useSelector} from "react-redux";
 
 const StyledTable = styled(Table)`
   width: 80%;
@@ -50,17 +52,14 @@ const generateTagColor = (tag) => {
 
 const size = 2
 const StudentsTable = () => {
-    const [rows, setRows] = useState([])
+    const dispatch = useDispatch()
     const [page, setPage] = useState(1)
-
+    const rows = useSelector(selectors.selectListData)
     const callTake = useCallback(() => {
-        take(size).then(res => {
-            const collection = res.docs.map(o => o.data())
-            if (collection && collection.length) {
-                setRows(collection)
-            }
-        })
-    }, [])
+        dispatch(actions.get.request({
+            limit: size
+        }))
+    }, [dispatch])
 
     useEffect(() => {
         callTake()
@@ -70,12 +69,10 @@ const StudentsTable = () => {
         const el = rows[0]
         setPage(page - 1)
         if (el) {
-            prev(size, el).then(res => {
-                const collection = res.docs.map(o => o.data())
-                if (collection && collection.length) {
-                    setRows(collection)
-                }
-            }).catch(() => console.log('failed prev'))
+            dispatch(actions.prev.request({
+                limit: size,
+                first: el
+            }))
         } else {
             callTake()
         }
@@ -85,12 +82,10 @@ const StudentsTable = () => {
         const el = rows[rows.length - 1]
         setPage(page + 1)
         if (el) {
-            next(size, el).then(res => {
-                const collection = res.docs.map(o => o.data())
-                if (collection && collection.length) {
-                    setRows(collection)
-                }
-            }).catch(() => console.log('failed next'))
+            dispatch(actions.prev.request({
+                limit: size,
+                last: el
+            }))
         } else {
             callTake()
         }
