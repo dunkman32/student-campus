@@ -1,10 +1,10 @@
 import {call, put, takeLatest} from 'redux-saga/effects'
 import {actions, constants} from '../index'
 import {take, prev, next} from '../../../adapters/users'
-
+import {uniqBy} from 'lodash'
 export function* getList(action) {
     try {
-        const querySnapshot = yield call(take, action.payload.limit, action.payload.name)
+        const querySnapshot = yield call(take, action.payload.limit, action.payload.filterStr)
         const data = []
         querySnapshot.forEach((snapshot) => {
             data.push(snapshot.data())
@@ -23,12 +23,13 @@ export function* callPrev(action) {
     try {
         const querySnapshot = yield call(prev, action.payload.limit, action.payload.first)
         const data = []
-        querySnapshot.forEach((snapshot) => {
-            data.push(snapshot.data())
+        querySnapshot.then(r => {
+            r.forEach((snapshot) => {
+                data.push(snapshot.data())
+            })
         })
-        console.log(data, 'std');
         yield put(actions.prev.success({
-            data
+            data: uniqBy(data, 'uid')
         }))
     } catch (e) {
         const {response, message} = e

@@ -17,6 +17,13 @@ const MenuContainer = styled.div`
   padding: 0 5rem
 `;
 
+const StyledSearch = styled(Search)`
+  min-width: 200px;
+  input:focus {
+    min-width: 500px;
+  }
+`
+
 const Header = () => {
     const [current, setCurrent] = useState('mail')
     const dispatch = useDispatch()
@@ -28,7 +35,7 @@ const Header = () => {
         console.log(value)
         dispatch(actions.get.request({
             limit: 25,
-            name: value
+            filterStr: value
         }))
     }
 
@@ -47,7 +54,7 @@ const Header = () => {
             </Menu>
             <div>
                 <Space>
-                    <Search placeholder="იპოვე სტუდენტი" onSearch={onSearch} enterButton />
+                    <StyledSearch placeholder="იპოვე სტუდენტი (სახელით, ელ. ფოსტით ან პირადი ნომრით)" onSearch={onSearch} enterButton />
                     <AddModal/>
                     <SignOut />
                 </Space>
