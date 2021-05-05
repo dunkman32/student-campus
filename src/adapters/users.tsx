@@ -57,10 +57,32 @@ export const prev = (limit: number = 25, first: any = null) => {
         .limitToLast(limit)
         .get()
 }
-export const take = (limit: number = 25) =>
-    COLLECTION.orderBy('createdAt')
-        .limit(limit)
-        .get()
+export const take = async (limit: number = 25, filterStr: string = '') => {
+    const trimmed = filterStr.trim()
+    if(trimmed) {
+        const name = COLLECTION
+            .where('name', '==', trimmed)
+            .get()
+        const idNumber = COLLECTION
+            .where('idNumber', '==', trimmed)
+            .get()
+        const email = COLLECTION
+            .where('email', '==', trimmed)
+            .get()
+        const campus = COLLECTION
+            .where('campus', '==', trimmed)
+            .get()
+
+        const [A, B, C, D] = await Promise.all([name, idNumber, email, campus]);
+        return [...A.docs, ...B.docs, ...C.docs, ...D.docs]
+    }
+    else {
+        return COLLECTION
+            .orderBy('createdAt')
+            .limit(limit)
+            .get()
+    }
+}
 
 interface Students {
     name: string,
