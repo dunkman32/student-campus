@@ -23,10 +23,8 @@ export function* callPrev(action) {
     try {
         const querySnapshot = yield call(prev, action.payload.limit, action.payload.first)
         const data = []
-        querySnapshot.then(r => {
-            r.forEach((snapshot) => {
-                data.push(snapshot.data())
-            })
+        querySnapshot.forEach((snapshot) => {
+            data.push(snapshot.data())
         })
         yield put(actions.prev.success({
             data: uniqBy(data, 'uid')
@@ -39,7 +37,7 @@ export function* callPrev(action) {
 
 export function* callNext(action) {
     try {
-        const querySnapshot = yield call(take, action.payload.limit, action.payload.last)
+        const querySnapshot = yield call(next, action.payload.limit, action.payload.last)
         const data = []
         querySnapshot.forEach((snapshot) => {
             data.push(snapshot.data())

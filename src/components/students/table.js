@@ -6,16 +6,11 @@ import {
     SearchOutlined,
     DeleteTwoTone,
     RightOutlined,
-    LeftSquareTwoTone,
-    RightSquareTwoTone,
     LeftOutlined
 } from '@ant-design/icons';
 import styled from "styled-components";
 import {
     removeFilm,
-    take,
-    prev,
-    next, 
     totalSize
 } from "../../adapters/users";
 import {formatDate} from '../../helpers'
@@ -28,11 +23,11 @@ const StyledTable = styled(Table)`
 `
 
 const Centered = styled.div`
-  width: 100%;
+  width: 80%;
   display: flex;
-  justify-content: space-around;
+  margin: auto;
+  justify-content: flex-end;
   align-items: center;
-  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
@@ -82,7 +77,7 @@ const StudentsTable = () => {
         const el = rows[rows.length - 1]
         setPage(page + 1)
         if (el) {
-            dispatch(actions.prev.request({
+            dispatch(actions.next.request({
                 limit: size,
                 last: el
             }))

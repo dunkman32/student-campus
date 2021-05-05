@@ -52,7 +52,7 @@ export const next = (limit: number = 25, last: any = null) => {
 
 export const prev = (limit: number = 25, first: any = null) => {
     console.log('prev');
-  return COLLECTION.orderBy('createdAt')
+    return COLLECTION.orderBy('createdAt')
         .endBefore(first.createdAt)
         .limitToLast(limit)
         .get()
