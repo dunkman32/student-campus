@@ -7,10 +7,6 @@ import {removeMessage} from '../../adapters/chat'
 
 const db = database.ref("messages");
 
-
-console.log(database, db);
-
-
 interface DataType {
     text: string,
     photo: string,

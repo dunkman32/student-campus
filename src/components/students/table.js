@@ -11,7 +11,8 @@ import {
 import styled from "styled-components";
 import {
     removeFilm,
-    totalSize
+    totalSize,
+    takeImg
 } from "../../adapters/users";
 import {formatDate} from '../../helpers'
 import AddModal from './add'
@@ -45,7 +46,7 @@ const generateTagColor = (tag) => {
     }
 }
 
-const size = 2
+const size = 100
 const StudentsTable = () => {
     const dispatch = useDispatch()
     const [page, setPage] = useState(1)
@@ -177,6 +178,7 @@ const StudentsTable = () => {
             console.log(e, 'error while removing');
         })
     }, [callTake])
+
     const columns = [
         {
             title: 'Name',
@@ -190,6 +192,16 @@ const StudentsTable = () => {
             dataIndex: 'idNumber',
             key: 'idNumber',
             width: '15%',
+        },
+        {
+            title: 'Image',
+            dataIndex: 'image',
+            key: 'image',
+            width: '5%',
+            render: (_, row) => {
+                console.log(row, 'ss');
+                return <img width='50px' height='50px' src={row.img} alt="student"/>
+            }
         },
         {
             title: 'No',
@@ -207,7 +219,7 @@ const StudentsTable = () => {
             title: 'campus',
             dataIndex: 'campus',
             key: 'campus',
-            width: '15%',
+            width: '10%',
             render: (_, row) => (
                 <Tag color={generateTagColor(row.campus)} key={row.id}>
                     {row.campus}
@@ -242,7 +254,6 @@ const StudentsTable = () => {
             )
         },
     ];
-
     return <>
         <StyledTable
             columns={columns}
@@ -252,10 +263,10 @@ const StudentsTable = () => {
         <Centered>
             <div>
                 <Button onClick={goPrev} disabled={page === 1}>
-                    <LeftOutlined  twoToneColor="#f5222d"/>
+                    <LeftOutlined twoToneColor="#f5222d"/>
                 </Button>
                 <Button onClick={goNext} disabled={page * size >= totalSize}>
-                    <RightOutlined  twoToneColor="#f5222d"/>
+                    <RightOutlined twoToneColor="#f5222d"/>
                 </Button>
             </div>
         </Centered>

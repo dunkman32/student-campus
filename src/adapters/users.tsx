@@ -95,15 +95,28 @@ interface Students {
     file: any
 }
 
+export const takeImg = (id: string) => {
+    const starsRef = storage.ref(`students/${id}.jpg`);
+// Get the download URL
+    return starsRef.getDownloadURL()
+        .then((url) => {
+            return url
+            // Insert url into an <img> tag to "download"
+        })
+}
+
+
 export const addUserWithEmail = async (student: Students) => {
     try {
         const {user}: any = await auth.createUserWithEmailAndPassword(student.email, student.idNumber)
         const uid = user.uid
-        const img = await storage.child(`students/${uid}.jpg`).put(student.file)
+        await storage.ref().child(`students/${uid}.jpg`).put(student.file)
+        const img = await takeImg(uid)
         const userOBJ = {
             ...omit(student, ['file']),
             uid,
-            role: 'student'
+            role: 'student',
+            img
         }
         const savedUsr = await COLLECTION.doc(uid).set(userOBJ)
         console.log(img, savedUsr, 'auth')
@@ -113,10 +126,8 @@ export const addUserWithEmail = async (student: Students) => {
     }
 };
 
-
 export const uploadFile = (name: string, file: any) => {
-    console.log(file)
-    return storage.child(`students/${name}.jpg`).put(file)
+    return storage.ref().child(`students/${name}.jpg`).put(file)
 };
 
 export const addStudent = (data: Students) => {

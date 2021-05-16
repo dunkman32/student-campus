@@ -9,7 +9,6 @@ export function* getList(action) {
         querySnapshot.forEach((snapshot) => {
             data.push(snapshot.data())
         })
-        console.log(data, 'std');
         yield put(actions.get.success({
             data
         }))
@@ -42,7 +41,6 @@ export function* callNext(action) {
         querySnapshot.forEach((snapshot) => {
             data.push(snapshot.data())
         })
-        console.log(data, 'std');
         yield put(actions.next.success({
             data
         }))

@@ -37,7 +37,6 @@ const Index = () => {
     }, [user.displayName, user.photoURL, user.uid])
 
     useEffect(() => {
-        console.log('lolo');
         // @ts-ignore
         forScroll.current.focus()
     }, [rows])

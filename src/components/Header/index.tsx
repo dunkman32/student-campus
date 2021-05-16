@@ -32,7 +32,6 @@ const Header = () => {
     }
 
     const onSearch = (value: string) => {
-        console.log(value)
         dispatch(actions.get.request({
             limit: 25,
             filterStr: value
