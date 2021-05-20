@@ -11,16 +11,19 @@ import {
 import styled from "styled-components";
 import {
     removeFilm,
-    totalSize,
-    takeImg
+    totalSize
 } from "../../adapters/users";
 import {formatDate} from '../../helpers'
 import AddModal from './add'
 import {useDispatch, useSelector} from "react-redux";
+import ImagePopup from "./image-popup";
 
 const StyledTable = styled(Table)`
   width: 80%;
   margin: 0 auto;
+  @media (max-width: 1024px) {
+    width: 98%;
+  }
 `
 
 const Centered = styled.div`
@@ -33,6 +36,13 @@ const Centered = styled.div`
   left: 0;
   right: 0;
   height: 3rem;
+`
+
+const Img = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
 `
 
 const generateTagColor = (tag) => {
@@ -91,7 +101,6 @@ const StudentsTable = () => {
     const [info, setInfo] = useState('')
     const [searchText, setSearchText] = useState('')
     const [searchedColumn, setSearchedColumn] = useState('')
-
     const getColumnSearchProps = dataIndex => ({
         filterDropdown: ({
                              setSelectedKeys,
@@ -181,6 +190,19 @@ const StudentsTable = () => {
 
     const columns = [
         {
+            title: 'Image',
+            dataIndex: 'image',
+            key: 'image',
+            width: '5%',
+            render: (_, row) => {
+                return (
+                    <ImagePopup row={row}>
+                        <Img src={row.img} alt="student"/>
+                    </ImagePopup>
+                )
+            }
+        },
+        {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
@@ -194,16 +216,6 @@ const StudentsTable = () => {
             width: '15%',
         },
         {
-            title: 'Image',
-            dataIndex: 'image',
-            key: 'image',
-            width: '5%',
-            render: (_, row) => {
-                console.log(row, 'ss');
-                return <img width='50px' height='50px' src={row.img} alt="student"/>
-            }
-        },
-        {
             title: 'No',
             dataIndex: 'no',
             key: 'no',
@@ -213,7 +225,7 @@ const StudentsTable = () => {
             title: 'Email',
             dataIndex: 'email',
             key: 'name',
-            width: '15%',
+            width: '20%',
         },
         {
             title: 'campus',
@@ -240,7 +252,7 @@ const StudentsTable = () => {
             title: 'Action',
             dataIndex: 'action',
             key: 'action',
-            width: '15%',
+            width: '10%',
             render: (_, row) => (
                 <>
                     <AddModal student={row} callTake={callTake}/>
