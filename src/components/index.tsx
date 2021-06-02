@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux'
-import {HashRouter as Router, Route, Switch,} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch,} from 'react-router-dom';
 import Main from '../components/main'
 import Chat from '../components/chat'
+import Documents from '../components/documents'
 import SignIn from '../components/SignIn'
 import {auth} from '../adapters/helpers'
 import {readUserById} from '../adapters/users'
@@ -34,6 +35,9 @@ const Components = () => {
                 <Switch>
                     <Route path="/" exact>
                         <Main/>
+                    </Route>
+                    <Route path="/documents" exact>
+                        <Documents/>
                     </Route>
                     <Route path="/chat" exact>
                         <Chat/>
