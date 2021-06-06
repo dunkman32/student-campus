@@ -1,20 +1,21 @@
 import React, {useCallback, useState} from "react";
 import styled from "styled-components";
-import {Menu, Space, Input} from 'antd';
-import {MailOutlined, AppstoreOutlined} from '@ant-design/icons';
+import {Menu, Space, Input, Badge, Tooltip, Button} from 'antd';
+import {useMessagesStream} from '../../adapters/documents'
+import {MailOutlined, AppstoreOutlined, NotificationOutlined, EditTwoTone, FileAddTwoTone} from '@ant-design/icons';
 import SignOut from '../SignOut';
 import AddModal from "../students/add";
 import {actions} from '../../modules/Users'
 import {useDispatch} from "react-redux";
+import { Link } from "react-router-dom";
 const { Search } = Input;
-
 const MenuContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #001529;
-  padding: 0 5rem
+  padding: 1rem 5rem
 `;
 
 const StyledSearch = styled(Search)`
@@ -38,23 +39,36 @@ const Header = () => {
         }))
     }
 
+    const pendings = useMessagesStream()
+
     return (
         <MenuContainer>
-            <Menu theme={'dark'} onClick={handleClick} selectedKeys={[current]} mode="horizontal">
-                    <Menu.Item key="mail" icon={<MailOutlined/>}>
-                        Navigation One
-                    </Menu.Item>
-                    <Menu.Item key="app" icon={<AppstoreOutlined/>}>
-                        Navigation Two
-                    </Menu.Item>
-                    <Menu.Item key="alipay">
-                        Navigation Four - Link
-                    </Menu.Item>
-            </Menu>
+            {/*<Menu theme={'dark'} onClick={handleClick} selectedKeys={[current]} mode="horizontal">*/}
+            {/*        <Menu.Item key="mail" icon={<MailOutlined/>}>*/}
+            {/*            Navigation One*/}
+            {/*        </Menu.Item>*/}
+            {/*        <Menu.Item key="app" icon={<AppstoreOutlined/>}>*/}
+            {/*            Navigation Two*/}
+            {/*        </Menu.Item>*/}
+            {/*        <Menu.Item key="alipay">*/}
+            {/*            Navigation Four - Link*/}
+            {/*        </Menu.Item>*/}
+            {/*</Menu>*/}
+            <div />
             <div>
                 <Space>
                     <StyledSearch placeholder="იპოვე სტუდენტი (სახელით, ელ. ფოსტით, კორპუსით ან პირადი ნომრით)" onSearch={onSearch} enterButton />
                     <AddModal/>
+                    <Tooltip title="დოკუმენტები" placement="bottom">
+                        <Link to={'/documents'}>
+                           <Button>
+                               <Badge count={pendings?.length}>
+                                   <NotificationOutlined />
+                               </Badge>
+                           </Button>
+                        </Link>
+                    </Tooltip>
+
                     <SignOut />
                 </Space>
             </div>

@@ -12,6 +12,17 @@ export const get = ({
         })
 })
 
+export const getUserById = ({
+    request: (id) => action(constants.GET_USER_BY_ID_REQUESTED, {id}),
+    success: (user) =>
+        action(constants.GET_USER_BY_ID_SUCCEEDED, {user}),
+    failure: (response, message) =>
+        action(constants.GET_USER_BY_ID_FAILED, {
+            response,
+            message
+        })
+})
+
 export const prev = ({
     request: (params) => action(constants.PREV_LIST_REQUESTED, params),
     success: (response) =>

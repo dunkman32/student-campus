@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Switch,} from 'react-router-dom';
 import Main from '../components/main'
 import Chat from '../components/chat'
 import Documents from '../components/documents'
+import ListById from '../components/documents/listById'
 import SignIn from '../components/SignIn'
 import {auth} from '../adapters/helpers'
 import {readUserById} from '../adapters/users'
@@ -36,12 +37,9 @@ const Components = () => {
                     <Route path="/" exact>
                         <Main/>
                     </Route>
-                    <Route path="/documents" exact>
-                        <Documents/>
-                    </Route>
-                    <Route path="/chat" exact>
-                        <Chat/>
-                    </Route>
+                    <Route path="/documents" exact component={Documents} />
+                    <Route path="/documents/:id" exact component={ListById} />
+                    <Route path="/chat" exact component={Chat} />
                 </Switch>
             </Router>
         ) :

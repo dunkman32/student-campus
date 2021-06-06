@@ -10,11 +10,7 @@ const Img = styled.img`
 
 
 const StyledTable = styled(Table)`
-  width: 80%;
   margin: 0 auto;
-  @media (max-width: 1024px) {
-    width: 98%;
-  }
 `
 
 export {

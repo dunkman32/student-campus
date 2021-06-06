@@ -38,5 +38,24 @@
 }
 
 .tableRow {
+  cursor: pointer;
+}
+
+.tableRowGreen {
+  cursor: pointer;
+  background-color: rgba(0,255,0,.21);
+}
+
+.tableRowGreen:hover > td{
+  background-color: rgba(0,255,0,.31) !important;
+}
+
+.tableRowRed {
+  cursor: pointer;
   background-color: rgba(255,0,0,.21);
+}
+
+.tableRowRed:hover > td{
+  background-color: rgba(255,0,0, .31) !important;
+
 }

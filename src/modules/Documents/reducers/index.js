@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import list from './list'
-import user from './user'
+import listById from './listById'
 
 const reducers = {
   list,
-  user
+  listById
 }
 
 const rootReducer = combineReducers(reducers)

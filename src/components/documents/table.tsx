@@ -1,15 +1,20 @@
 import React from "react";
 import {format, isValid} from "date-fns";
 import ImagePopup from "./image-popup";
-// @ts-ignore
 import {Img, StyledTable} from './styles'
-import AddModal from "../students/add";
-import {Button, Popconfirm} from "antd";
+import {Button, Popconfirm, Tag} from "antd";
 import {DeleteTwoTone, HeartTwoTone} from "@ant-design/icons";
 import {
     handleApprove,
     handleRemove
 } from '../../adapters/documents'
+import { useHistory } from "react-router-dom";
+
+enum Status {
+    Pending= 'Pending',
+    Approved= 'Approved',
+    Rejected= 'Rejected',
+}
 
 interface Row {
     userId: string,
@@ -17,7 +22,7 @@ interface Row {
     file: any,
     desc: string,
     createdAt: number,
-    approved?: boolean
+    status?: Status
 }
 
 const formatDate = (d: number) => {
@@ -28,8 +33,20 @@ const formatDate = (d: number) => {
     return 'undefined'
 }
 
+const generateTagColor = (status: Status) => {
+    switch (status) {
+        case Status.Approved:
+            return '#075599'
+        case Status.Rejected:
+            return '#cb076e'
+        default:
+            return '#b37feb'
+    }
+}
 
-const TableComponent = ({data}: { data: Row[] }) => {
+
+const TableComponent = ({data, withLink}: { data: Row[], withLink?: boolean }) => {
+    let history = useHistory();
     const columns = [
         {
             title: 'Image',
@@ -38,9 +55,16 @@ const TableComponent = ({data}: { data: Row[] }) => {
             width: '5%',
             render: (_: any, row: any) => {
                 return (
-                    <ImagePopup row={row}>
-                        <Img src={row.file} alt="document"/>
-                    </ImagePopup>
+                    withLink ? (
+                        <ImagePopup row={row}>
+                            <Img src={row.file} alt="document"/>
+                        </ImagePopup>
+
+                    ): (
+                        <a target={'_blank'} href={row.file}>
+                            <Img src={row.file} alt="document"/>
+                        </a>
+                    )
                 )
             }
         },
@@ -48,7 +72,7 @@ const TableComponent = ({data}: { data: Row[] }) => {
             title: 'username',
             dataIndex: 'username',
             key: 'username',
-            width: '15%',
+            width: '10%',
         },
         {
             title: 'User Id',
@@ -57,10 +81,21 @@ const TableComponent = ({data}: { data: Row[] }) => {
             width: '10%',
         },
         {
+            title: 'campus',
+            dataIndex: 'campus',
+            key: 'campus',
+            width: '10%',
+            render: (_: any, row: any) => (
+                <Tag color={generateTagColor(row.status)} key={row.id}>
+                    {row.status}
+                </Tag>
+            )
+        },
+        {
             title: 'Description',
             dataIndex: 'desc',
             key: 'desc',
-            width: '20%',
+            width: '15%',
         },
         {
             title: 'Created At',
@@ -78,13 +113,13 @@ const TableComponent = ({data}: { data: Row[] }) => {
             width: '10%',
             render: (_: any, row: any) => (
                 <>
-                    <Popconfirm key={row.id} title="Sure to approve?"
+                    <Popconfirm key={`approve_${row.id}`} title="Sure to approve?"
                                 onConfirm={() => handleApprove(row)}>
                         <Button>
                             <HeartTwoTone/>
                         </Button>
                     </Popconfirm>
-                    <Popconfirm key={row.id} title="Sure to remove?"
+                    <Popconfirm key={`reject_${row.id}`} title="Sure to remove?"
                                 onConfirm={() => handleRemove(row)}>
                         <Button>
                             <DeleteTwoTone twoToneColor="#f5222d"/>
@@ -95,11 +130,29 @@ const TableComponent = ({data}: { data: Row[] }) => {
         },
     ];
 
+    const renderColor = (status: Status) => {
+        switch (status) {
+            case Status.Approved: return 'tableRowGreen'
+            case Status.Rejected: return 'tableRowRed'
+            default: return 'tableRow'
+        }
+    }
+
+    const handleRoute = (id: string) => {
+        history.push(`/documents/${id}`);
+    }
+
     return (
         <StyledTable
-            rowClassName={(record: any) => record.approved ? '': 'tableRow'}
-            columns={columns}
+            onRow={(record: any, index: any) => ({
+                onDoubleClick: () => {
+                        withLink && handleRoute(record.userId)
+                    }
+                })
+            }
+            rowClassName={(record: any) => renderColor(record.status)}
             dataSource={data}
+            columns={columns}
             pagination={false}
         />
     );

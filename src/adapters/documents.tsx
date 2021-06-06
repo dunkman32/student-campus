@@ -9,6 +9,12 @@ export const removeMessage = (id: string) => {
     return COLLECTION.doc(id).delete()
 }
 
+enum Status {
+    Pending = 'Pending',
+    Approved = 'Approved',
+    Rejected = 'Rejected',
+}
+
 interface DataType {
     userId: string,
     username: string,
@@ -18,9 +24,27 @@ interface DataType {
 }
 
 export const useMessagesStream = () => {
-    const query = COLLECTION.orderBy('createdAt').limit(25);
+    const query = COLLECTION.where("status", "==", Status.Pending);
     return useCollectionData<DataType>(query, {idField: 'id'})[0]
 }
+
+export const takeDocumentsWithFilters = (userId: string = '', status: string) => {
+    let query = COLLECTION.where('userId', '==', userId)
+    if (status){
+        query = query.where("status", "==", status)
+    }
+    return query.get().then((r) => r.docs).catch(() => console.log('ერორი'))
+}
+
+export const takeDocuments = (status: string) => {
+    if (status){
+        return COLLECTION.where("status", "==", status).get().then((r) => r.docs).catch(() => console.log('ერორი'))
+    }
+    return COLLECTION.get().then((r) => r.docs).catch(() => console.log('ერორი'))
+}
+
+
+
 
 interface SendDataTypes  {
     id: string,
@@ -28,7 +52,7 @@ interface SendDataTypes  {
     photo: string,
     createdAt: number,
     user: string,
-    approved: boolean,
+    status: Status,
 }
 
 export const sendMessage = (data: SendDataTypes) => COLLECTION.add(data)
@@ -37,7 +61,7 @@ export const handleApprove = (data: SendDataTypes) => {
     let prod = COLLECTION.doc(data.id)
     return prod.update({
         ...data,
-        approved: true
+        status: Status.Approved
     })
 }
 export const handleRemove = (data: SendDataTypes) => {
@@ -45,7 +69,7 @@ export const handleRemove = (data: SendDataTypes) => {
     let prod = COLLECTION.doc(data.id)
     return prod.update({
         ...data,
-        approved: false
+        status: Status.Rejected
     })
 }
 

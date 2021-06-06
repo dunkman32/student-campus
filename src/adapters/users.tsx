@@ -84,6 +84,11 @@ export const take = async (limit: number = 25, filterStr: string = '') => {
     }
 }
 
+
+export const takeUserById = (id: string) => {
+    return COLLECTION.doc(id).get().then((doc) => doc.data()).catch(() => {})
+}
+
 interface Students {
     name: string,
     email: string,
