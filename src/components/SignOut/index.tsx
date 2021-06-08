@@ -4,6 +4,14 @@ import {Button, Tooltip} from "antd";
 import {LogoutOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
 import {actions} from '../../modules/Auth';
+import styled from "styled-components";
+
+const StyledButton = styled(Button)`
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`
 
 const SignOut = () => {
     const dispatch = useDispatch()
@@ -14,8 +22,8 @@ const SignOut = () => {
         ).catch((e) => console.log(e))
     }
     return (
-        <Tooltip title="Sign Out">
-            <Button onClick={signOut} icon={<LogoutOutlined/>}/>
+        <Tooltip title="გამოსვლა">
+            <StyledButton onClick={signOut} icon={<LogoutOutlined/>}/>
         </Tooltip>
     )
 }

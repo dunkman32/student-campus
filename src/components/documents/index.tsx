@@ -4,7 +4,6 @@ import styled from "styled-components";
 import TableComponent from './table'
 import {Tabs} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
 import {actions, selectors} from "../../modules/Documents";
 
 const { TabPane } = Tabs;
@@ -14,7 +13,7 @@ const Container = styled.div`
   width: 100%;
   position: relative;
   background-color: #282c34;
-  padding: 5rem;
+  padding: 2rem 5rem;
 `
 
 enum Status {

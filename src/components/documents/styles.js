@@ -6,6 +6,7 @@ const Img = styled.img`
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
+  border: 1px solid #282c34;
 `
 
 

@@ -61,7 +61,6 @@ const AddModal = ({ student, callTake }: { student?: any, callTake?: any }) => {
     }, [file])
 
     const update = useCallback((student) => {
-        console.log(student, 'aaaa');
         const omitArr = ['birth', 'createdAt']
         if(!student.file) omitArr.push('file')
         updateStudent(omit(student, omitArr)).then(() => {
@@ -79,7 +78,7 @@ const AddModal = ({ student, callTake }: { student?: any, callTake?: any }) => {
 
     return (
         <>
-            <Tooltip title="Add student" placement="bottom">
+            <Tooltip title="დაამატე სტუდენტი" placement="bottom">
                 <Button onClick={() => setVisible(true)}>
                     {
                         isEdit ? <EditTwoTone twoToneColor="#fadb14" /> : <FileAddTwoTone twoToneColor="#52c41a" />

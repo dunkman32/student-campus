@@ -11,7 +11,7 @@ import {
 import { useHistory } from "react-router-dom";
 
 enum Status {
-    Pending= 'Pending',
+    Pending = 'Pending',
     Approved= 'Approved',
     Rejected= 'Rejected',
 }

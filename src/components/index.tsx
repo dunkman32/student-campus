@@ -9,6 +9,7 @@ import SignIn from '../components/SignIn'
 import {auth} from '../adapters/helpers'
 import {readUserById} from '../adapters/users'
 import {actions, selectors} from '../modules/Auth';
+import Header from "./Header";
 
 const Components = () => {
     const dispatch = useDispatch()
@@ -33,6 +34,7 @@ const Components = () => {
 
     return user ? (
             <Router>
+                <Header/>
                 <Switch>
                     <Route path="/" exact>
                         <Main/>

@@ -30,7 +30,6 @@ const Index = () => {
 
     return (
         <div className="App">
-            <Header/>
             <StyledTitle type="secondary" level={4}>Welcome back {user.name} your role
                 is {user.role || 'admin'}</StyledTitle>
             <hr/>

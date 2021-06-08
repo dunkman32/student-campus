@@ -1,22 +1,15 @@
-import React, {useCallback, useState} from "react";
+import React, {useMemo} from "react";
 import styled from "styled-components";
-import {Menu, Space, Input, Badge, Tooltip, Button} from 'antd';
+import {Badge, Button, Input, Space, Tooltip} from 'antd';
 import {useMessagesStream} from '../../adapters/documents'
-import {MailOutlined, AppstoreOutlined, NotificationOutlined, EditTwoTone, FileAddTwoTone} from '@ant-design/icons';
+import {HomeOutlined, NotificationOutlined, ProfileOutlined} from '@ant-design/icons';
 import SignOut from '../SignOut';
 import AddModal from "../students/add";
 import {actions} from '../../modules/Users'
 import {useDispatch} from "react-redux";
-import { Link } from "react-router-dom";
+import {useLocation, Link} from "react-router-dom";
+
 const { Search } = Input;
-const MenuContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #001529;
-  padding: 1rem 5rem
-`;
 
 const StyledSearch = styled(Search)`
   min-width: 200px;
@@ -25,55 +18,86 @@ const StyledSearch = styled(Search)`
   }
 `
 
-const Header = () => {
-    const [current, setCurrent] = useState('mail')
-    const dispatch = useDispatch()
-    const handleClick = (e: any) => {
-        setCurrent(e.key)
-    }
+const HeaderContainer = styled.div`
+    height: 4rem;
+    background-color: #212738;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    box-shadow: 0 0 20px 0 rgba(69, 90, 100, .9);
+`;
 
+const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem
+`
+const LeftSide = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem
+`
+const Span = styled.span`
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: rgba(228, 204, 255, 0.64);
+`
+const Header = () => {
+    const dispatch = useDispatch()
     const onSearch = (value: string) => {
         dispatch(actions.get.request({
             limit: 25,
             filterStr: value
         }))
     }
-
+    const {pathname} = useLocation()
+    
+    const renderType = useMemo(() => pathname.includes('documents'), [pathname])
+    console.log(renderType,  pathname.includes('documents'), pathname);
     const pendings = useMessagesStream()
 
     return (
-        <MenuContainer>
-            {/*<Menu theme={'dark'} onClick={handleClick} selectedKeys={[current]} mode="horizontal">*/}
-            {/*        <Menu.Item key="mail" icon={<MailOutlined/>}>*/}
-            {/*            Navigation One*/}
-            {/*        </Menu.Item>*/}
-            {/*        <Menu.Item key="app" icon={<AppstoreOutlined/>}>*/}
-            {/*            Navigation Two*/}
-            {/*        </Menu.Item>*/}
-            {/*        <Menu.Item key="alipay">*/}
-            {/*            Navigation Four - Link*/}
-            {/*        </Menu.Item>*/}
-            {/*</Menu>*/}
-            <div />
-            <div>
-                <Space>
+        <HeaderContainer>
+            <LeftSide>
+                <Link to={'/'}>
+                    <Span>სტუდენტის პორტალი</Span>
+                </Link>
+                <Link to={'/'}>
+                    <Button
+                        type={renderType ? 'link' : 'primary'} ghost icon={<HomeOutlined />}>
+                        მთავარი
+                    </Button>
+                </Link>
+                <Link to={'/documents'}>
+                    <Button type={renderType ? 'primary':'link'} ghost icon={<ProfileOutlined />}>
+                        დოკუმენტები
+                    </Button>
+                </Link>
+            </LeftSide>
+            <Space>
+                <Actions>
                     <StyledSearch placeholder="იპოვე სტუდენტი (სახელით, ელ. ფოსტით, კორპუსით ან პირადი ნომრით)" onSearch={onSearch} enterButton />
                     <AddModal/>
                     <Tooltip title="დოკუმენტები" placement="bottom">
                         <Link to={'/documents'}>
-                           <Button>
-                               <Badge count={pendings?.length}>
-                                   <NotificationOutlined />
-                               </Badge>
-                           </Button>
+                            <Button>
+                                <Badge count={pendings?.length}>
+                                    <NotificationOutlined />
+                                </Badge>
+                            </Button>
                         </Link>
                     </Tooltip>
-
                     <SignOut />
-                </Space>
-            </div>
-        </MenuContainer>
+                </Actions>
+            </Space>
+        </HeaderContainer>
     )
 }
+
+
 
 export default Header
