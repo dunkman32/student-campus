@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/student-campus/static/css/main.959aecd8.chunk.css",
+    "main.js": "/student-campus/static/js/main.d3280891.chunk.js",
+    "main.js.map": "/student-campus/static/js/main.d3280891.chunk.js.map",
+    "runtime-main.js": "/student-campus/static/js/runtime-main.6dc433e2.js",
+    "runtime-main.js.map": "/student-campus/static/js/runtime-main.6dc433e2.js.map",
+    "static/css/2.4ee63354.chunk.css": "/student-campus/static/css/2.4ee63354.chunk.css",
+    "static/js/2.88b316a1.chunk.js": "/student-campus/static/js/2.88b316a1.chunk.js",
+    "static/js/2.88b316a1.chunk.js.map": "/student-campus/static/js/2.88b316a1.chunk.js.map",
+    "static/js/3.0fe2f55f.chunk.js": "/student-campus/static/js/3.0fe2f55f.chunk.js",
+    "static/js/3.0fe2f55f.chunk.js.map": "/student-campus/static/js/3.0fe2f55f.chunk.js.map",
+    "index.html": "/student-campus/index.html",
+    "static/css/2.4ee63354.chunk.css.map": "/student-campus/static/css/2.4ee63354.chunk.css.map",
+    "static/css/main.959aecd8.chunk.css.map": "/student-campus/static/css/main.959aecd8.chunk.css.map",
+    "static/js/2.88b316a1.chunk.js.LICENSE.txt": "/student-campus/static/js/2.88b316a1.chunk.js.LICENSE.txt",
+    "static/media/circleBlue.d2bd7786.svg": "/student-campus/static/media/circleBlue.d2bd7786.svg",
+    "static/media/circleGreen.d65937db.svg": "/student-campus/static/media/circleGreen.d65937db.svg",
+    "static/media/circleOrange.d68d311a.svg": "/student-campus/static/media/circleOrange.d68d311a.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6dc433e2.js",
+    "static/css/2.4ee63354.chunk.css",
+    "static/js/2.88b316a1.chunk.js",
+    "static/css/main.959aecd8.chunk.css",
+    "static/js/main.d3280891.chunk.js"
+  ]
+}
