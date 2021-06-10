@@ -10,6 +10,7 @@ import {auth} from '../adapters/helpers'
 import {readUserById} from '../adapters/users'
 import {actions, selectors} from '../modules/Auth';
 import Header from "./Header";
+import Footer from "./Footer";
 
 const Components = () => {
     const dispatch = useDispatch()
@@ -43,6 +44,7 @@ const Components = () => {
                     <Route path="/documents/:id" exact component={ListById} />
                     <Route path="/chat" exact component={Chat} />
                 </Switch>
+                <Footer />
             </Router>
         ) :
         (<SignIn/>)
