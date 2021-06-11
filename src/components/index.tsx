@@ -37,9 +37,7 @@ const Components = () => {
             <Router>
                 <Header/>
                 <Switch>
-                    <Route path="/" exact>
-                        <Main/>
-                    </Route>
+                    <Route path="/" exact component={Main} />
                     <Route path="/documents" exact component={Documents} />
                     <Route path="/documents/:id" exact component={ListById} />
                     <Route path="/chat" exact component={Chat} />

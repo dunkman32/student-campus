@@ -258,9 +258,7 @@ const StudentsTable = () => {
                     <AddModal student={row} callTake={callTake}/>
                     <Popconfirm key={row.id} title="Sure to delete?"
                                 onConfirm={handleDelete(row.id)}>
-                        <Button>
-                            <DeleteTwoTone twoToneColor="#f5222d"/>
-                        </Button>
+                            <DeleteTwoTone style={{ fontSize: "1.25rem", marginLeft: '.5rem' }} twoToneColor="#f5222d"/>
                     </Popconfirm>
                 </>
             )

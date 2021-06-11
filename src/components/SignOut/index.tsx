@@ -23,7 +23,7 @@ const SignOut = () => {
     }
     return (
         <Tooltip title="გამოსვლა">
-            <StyledButton onClick={signOut} icon={<LogoutOutlined/>}/>
+            <LogoutOutlined onClick={signOut} style={{fontSize: '1.25rem', color: '#fff'}}/>
         </Tooltip>
     )
 }

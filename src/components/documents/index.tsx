@@ -1,11 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import '../../App.css';
 import styled from "styled-components";
 import TableComponent from './table'
 import {Tabs} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {actions, selectors} from "../../modules/Documents";
-
+import qs from "qs";
+import {
+    BrowserRouter as Router,
+    useHistory,
+    useLocation
+  } from "react-router-dom";
+import { stat } from 'node:fs';
 const { TabPane } = Tabs;
 
 const Container = styled.div`
@@ -23,11 +29,24 @@ enum Status {
 }
 
 const Index = () => {
+    const {search} = useLocation()
+    const history = useHistory()
+    const {status} = qs.parse(search,  { ignoreQueryPrefix: true })
     const dispatch = useDispatch()
-    const [status, setStatus] = useState('')
     const rows = useSelector(selectors.selectListOfDocuments)
+
+    const setStatus = (status: string) => {
+          if(status) {
+            history.push(`/documents?status=${status}`)
+          } else {
+            history.push('/documents')
+          }
+    }
+
+    const activeKey: string = useMemo(() => status?.toString() || '', [status])    
+
     useEffect(() => {
-        dispatch(actions.list.request( status))
+        dispatch(actions.list.request(status))
     }, [dispatch, status])
     return (
         <Container>
@@ -35,6 +54,7 @@ const Index = () => {
                 tabBarStyle={{
                     color: '#fefae0'
                 }}
+                defaultActiveKey={activeKey}
                 onChange={setStatus}>
                 <TabPane tab={'All'} key={''} />
                 <TabPane tab={Status.Pending} key={Status.Pending} />

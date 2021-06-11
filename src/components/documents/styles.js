@@ -2,9 +2,8 @@ import styled from "styled-components";
 import {Table} from "antd";
 
 const Img = styled.img`
-  width: 50px;
+  max-width: 100px;
   height: 50px;
-  border-radius: 50%;
   cursor: pointer;
   border: 1px solid #282c34;
 `
