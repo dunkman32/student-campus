@@ -7,6 +7,7 @@ import {
   DeleteTwoTone,
   RightOutlined,
   LeftOutlined,
+  EyeTwoTone,
 } from "@ant-design/icons";
 import styled from "styled-components";
 import { removeFilm, totalSize } from "../../adapters/users";
@@ -14,6 +15,7 @@ import { formatDate } from "../../helpers";
 import AddModal from "./add";
 import { useDispatch, useSelector } from "react-redux";
 import ImagePopup from "./image-popup";
+import { Link } from "react-router-dom";
 
 const StyledTable = styled(Table)`
   width: 80%;
@@ -271,25 +273,35 @@ const StudentsTable = () => {
       dataIndex: "action",
       key: "action",
       width: "10%",
-      render: (_, row) => (
-        <>
-          <AddModal student={row} callTake={callTake} />
-          <Popconfirm
-            key={row.id}
-            title="წაშალე სტუდენტი?"
-            onConfirm={handleDelete(row.id)}
-          >
-            <Tooltip title={"წაშალე სტუდენტი"}>
-              <DeleteTwoTone
-                style={{ fontSize: "1.25rem", marginLeft: ".5rem" }}
-                twoToneColor="#f5222d"
-              />
+      render: (_, row) => {
+        return (
+          <>
+            <Tooltip title={"იხილე დეტალურად"}>
+              <Link to={`/user/${row.uid}`}>
+                <EyeTwoTone
+                  style={{ fontSize: "1.25rem", marginRight: ".5rem" }}
+                />
+              </Link>
             </Tooltip>
-          </Popconfirm>
-        </>
-      ),
+            <AddModal student={row} callTake={callTake} />
+            <Popconfirm
+              key={row.uid}
+              title="წაშალე სტუდენტი?"
+              onConfirm={handleDelete(row.uid)}
+            >
+              <Tooltip title={"წაშალე სტუდენტი"}>
+                <DeleteTwoTone
+                  style={{ fontSize: "1.25rem", marginLeft: ".5rem" }}
+                  twoToneColor="#f5222d"
+                />
+              </Tooltip>
+            </Popconfirm>
+          </>
+        );
+      },
     },
   ];
+
   return (
     <>
       <StyledTable

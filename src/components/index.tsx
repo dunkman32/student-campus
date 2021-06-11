@@ -11,6 +11,7 @@ import {readUserById} from '../adapters/users'
 import {actions, selectors} from '../modules/Auth';
 import Header from "./Header";
 import Footer from "./Footer";
+import User from "./user";
 
 const Components = () => {
     const dispatch = useDispatch()
@@ -38,6 +39,7 @@ const Components = () => {
                 <Header/>
                 <Switch>
                     <Route path="/" exact component={Main} />
+                    <Route path="/user/:id" exact component={User} />
                     <Route path="/documents" exact component={Documents} />
                     <Route path="/documents/:id" exact component={ListById} />
                     <Route path="/chat" exact component={Chat} />
