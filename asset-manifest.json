@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/student-campus/static/css/main.959aecd8.chunk.css",
-    "main.js": "/student-campus/static/js/main.b0e5dab3.chunk.js",
-    "main.js.map": "/student-campus/static/js/main.b0e5dab3.chunk.js.map",
+    "main.js": "/student-campus/static/js/main.a8add0e2.chunk.js",
+    "main.js.map": "/student-campus/static/js/main.a8add0e2.chunk.js.map",
     "runtime-main.js": "/student-campus/static/js/runtime-main.7f5f044a.js",
     "runtime-main.js.map": "/student-campus/static/js/runtime-main.7f5f044a.js.map",
     "static/css/2.4ee63354.chunk.css": "/student-campus/static/css/2.4ee63354.chunk.css",
@@ -16,13 +16,14 @@
     "static/js/2.7bba9969.chunk.js.LICENSE.txt": "/student-campus/static/js/2.7bba9969.chunk.js.LICENSE.txt",
     "static/media/circleBlue.d2bd7786.svg": "/student-campus/static/media/circleBlue.d2bd7786.svg",
     "static/media/circleGreen.d65937db.svg": "/student-campus/static/media/circleGreen.d65937db.svg",
-    "static/media/circleOrange.d68d311a.svg": "/student-campus/static/media/circleOrange.d68d311a.svg"
+    "static/media/circleOrange.d68d311a.svg": "/student-campus/static/media/circleOrange.d68d311a.svg",
+    "static/media/logo.5c838b77.png": "/student-campus/static/media/logo.5c838b77.png"
   },
   "entrypoints": [
     "static/js/runtime-main.7f5f044a.js",
     "static/css/2.4ee63354.chunk.css",
     "static/js/2.7bba9969.chunk.js",
     "static/css/main.959aecd8.chunk.css",
-    "static/js/main.b0e5dab3.chunk.js"
+    "static/js/main.a8add0e2.chunk.js"
   ]
 }
