@@ -12,7 +12,7 @@ import AddModal from "../students/add";
 import { actions } from "../../modules/Users";
 import { useDispatch } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
-
+import logo from '../../images/logo.png'
 const { Search } = Input;
 
 const StyledSearch = styled(Search)`
@@ -45,11 +45,25 @@ const LeftSide = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
-const Span = styled.span`
-  font-weight: 500;
-  font-size: 1.25rem;
-  color: rgba(228, 204, 255, 0.64);
+const Image = styled.img`
+  width: 50px;
 `;
+
+
+const Span = styled.span`
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #1890ff;
+`;
+
+
+const StyedLink = styled(Link)`
+  display: flex;
+  gap: .325rem;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const Header = () => {
   const dispatch = useDispatch();
   const onSearch = (value: string) => {
@@ -68,9 +82,10 @@ const Header = () => {
   return (
     <HeaderContainer>
       <LeftSide>
-        <Link to={"/"}>
-          <Span>სტუდენტის პორტალი</Span>
-        </Link>
+        <StyedLink to={"/"}>
+          <Image src={logo} alt='logo' />
+          <Span>სტუდენტური პორტალი</Span>
+        </StyedLink>
         <Link to={"/"}>
           <Button
             type={renderType ? "link" : "primary"}
