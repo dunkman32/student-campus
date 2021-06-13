@@ -24,7 +24,6 @@ export function* getList(action) {
         querySnapshot.forEach((snapshot) => {
             data.push(snapshot.data())
         })
-        console.log(data, 'byID');
         yield put(actions.list.success({
             data
         }))
