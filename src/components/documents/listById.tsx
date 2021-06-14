@@ -60,7 +60,7 @@ const Index = () => {
                     <TabPane tab={'ყველა'} key={''} />
                     <TabPane tab={'განუხილავი'} key={Status.Pending} />
                     <TabPane tab={'დადასტურებული'} key={Status.Approved}/>
-                    <TabPane tab={'უარჯოფილი'} key={Status.Rejected}/>
+                    <TabPane tab={'უარყოფილი'} key={Status.Rejected}/>
                 </Tabs>
                 {
                     rows && <TableComponent data={rows} changeStatus={changeStatus}/>
