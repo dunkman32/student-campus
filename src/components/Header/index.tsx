@@ -12,7 +12,7 @@ import AddModal from "../students/add";
 import { actions } from "../../modules/Users";
 import { useDispatch } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
-import logo from '../../images/logo.png'
+import logo from '../../static/images/logo.png'
 const { Search } = Input;
 
 const StyledSearch = styled(Search)`
