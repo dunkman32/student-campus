@@ -155,7 +155,7 @@ const StudentsTable = () => {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "var(--blue)" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]

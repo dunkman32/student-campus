@@ -68,7 +68,7 @@ const StudentsTable = () => {
                 </Space>
             </div>
         ),
-        filterIcon: filtered => <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>,
+        filterIcon: filtered => <SearchOutlined style={{color: filtered ? 'var(--blue)' : undefined}}/>,
         onFilter: (value, record) =>
             record[dataIndex]
                 ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())

@@ -49,15 +49,13 @@ const Image = styled.img`
   width: 50px;
 `;
 
-
 const Span = styled.span`
   font-weight: 600;
   font-size: 1.25rem;
-  color: #1890ff;
+  color: var(--blue);
 `;
 
-
-const StyedLink = styled(Link)`
+const StyledLink = styled(Link)`
   display: flex;
   gap: .325rem;
   justify-content: space-between;
@@ -82,10 +80,10 @@ const Header = () => {
   return (
     <HeaderContainer>
       <LeftSide>
-        <StyedLink to={"/"}>
+        <StyledLink to={"/"}>
           <Image src={logo} alt='logo' />
           <Span>სტუდენტური პორტალი</Span>
-        </StyedLink>
+        </StyledLink>
         <Link to={"/"}>
           <Button
             type={renderType ? "link" : "primary"}
