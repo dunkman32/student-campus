@@ -53,6 +53,19 @@ const reducer =
                         message: getProp(() => action.payload.message, '')
                     }
                 }
+            case constants.LIST_CHANGE_STATUS:
+                return {
+                    ...state,
+                    data: state.data.map((d) => {
+                        if(d.id === action.payload.id) {
+                            return {
+                                ...d,
+                                status: action.payload.status
+                            }
+                        }
+                        return d
+                    })
+                }
             default:
                 return state
         }

@@ -9,6 +9,11 @@ export const listById = ({
         action(constants.LIST_BY_ID_FAILED, {
             response,
             message
+        }),
+    change: (id, status) =>
+        action(constants.LIST_BY_ID_CHANGE_STATUS, {
+            id,
+            status
         })
 })
 
@@ -20,5 +25,10 @@ export const list = ({
         action(constants.LIST_FAILED, {
             response,
             message
+        }),
+    change: (id, status) =>
+        action(constants.LIST_CHANGE_STATUS, {
+            id,
+            status
         })
 })

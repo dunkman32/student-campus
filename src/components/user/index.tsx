@@ -55,10 +55,10 @@ const Index = () => {
                         }}
                         defaultActiveKey={activeKey}
                         onChange={setStatus}>
-                        <TabPane tab={'All'} key={''}/>
-                        <TabPane tab={Status.Pending} key={Status.Pending}/>
-                        <TabPane tab={Status.Approved} key={Status.Approved}/>
-                        <TabPane tab={Status.Rejected} key={Status.Rejected}/>
+                        <TabPane tab={'ყველა'} key={''} />
+                        <TabPane tab={'განუხილავი'} key={Status.Pending} />
+                        <TabPane tab={'დადასტურებული'} key={Status.Approved}/>
+                        <TabPane tab={'უარჯოფილი'} key={Status.Rejected}/>
                     </Tabs>
                     <Docs>
                         {

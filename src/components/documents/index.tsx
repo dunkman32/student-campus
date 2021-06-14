@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import '../../App.css';
 import styled from "styled-components";
 import TableComponent from './table'
@@ -10,12 +10,13 @@ import {
     BrowserRouter as Router,
     useHistory,
     useLocation
-  } from "react-router-dom";
-import { stat } from 'node:fs';
-const { TabPane } = Tabs;
+} from "react-router-dom";
+import {stat} from 'node:fs';
+
+const {TabPane} = Tabs;
 
 const Container = styled.div`
-  box-shadow: -1px -1px 6px 1px rgba(0,0,0,0.1);
+  box-shadow: -1px -1px 6px 1px rgba(0, 0, 0, 0.1);
   width: 100%;
   position: relative;
   background-color: #282c34;
@@ -23,30 +24,38 @@ const Container = styled.div`
 `
 
 enum Status {
-    Pending= 'Pending',
-    Approved= 'Approved',
-    Rejected= 'Rejected',
+    Pending = 'Pending',
+    Approved = 'Approved',
+    Rejected = 'Rejected',
 }
 
 const Index = () => {
     const {search} = useLocation()
     const history = useHistory()
-    const {status} = qs.parse(search,  { ignoreQueryPrefix: true })
+    const {status} = qs.parse(search, {ignoreQueryPrefix: true})
     const dispatch = useDispatch()
     const rows = useSelector(selectors.selectListOfDocuments)
 
     const setStatus = (status: string) => {
-          if(status) {
+        if (status) {
             history.push(`/documents?status=${status}`)
-          } else {
+        } else {
             history.push('/documents')
-          }
+        }
     }
 
-    const activeKey: string = useMemo(() => status?.toString() || '', [status])    
+    const activeKey: string = useMemo(() => status?.toString() || '', [status])
+
+    const callForData = useCallback(() => {
+        dispatch(actions.list.request(status))
+    }, [status])
+
+    const changeStatus = useCallback((id, status) => {
+        dispatch(actions.list.change(id, status))
+    }, [status])
 
     useEffect(() => {
-        dispatch(actions.list.request(status))
+        callForData()
     }, [dispatch, status])
     return (
         <Container>
@@ -56,13 +65,13 @@ const Index = () => {
                 }}
                 defaultActiveKey={activeKey}
                 onChange={setStatus}>
-                <TabPane tab={'All'} key={''} />
-                <TabPane tab={Status.Pending} key={Status.Pending} />
-                <TabPane tab={Status.Approved} key={Status.Approved}/>
-                <TabPane tab={Status.Rejected} key={Status.Rejected}/>
+                <TabPane tab={'ყველა'} key={''} />
+                <TabPane tab={'განუხილავი'} key={Status.Pending} />
+                <TabPane tab={'დადასტურებული'} key={Status.Approved}/>
+                <TabPane tab={'უარჯოფილი'} key={Status.Rejected}/>
             </Tabs>
             {
-                rows && <TableComponent data={rows} withLink/>
+                rows && <TableComponent data={rows} changeStatus={changeStatus} withLink/>
             }
         </Container>
     );

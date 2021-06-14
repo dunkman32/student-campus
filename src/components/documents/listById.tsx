@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import '../../App.css';
 import styled from "styled-components";
 import {useParams} from "react-router-dom";
@@ -36,9 +36,19 @@ const Index = () => {
 
     const {id}: ParamsType = useParams()
     const rows = useSelector(selectors.selectListOfDocumentsById)
-    useEffect(() => {
+
+    const callForData = useCallback(() => {
         dispatch(actions.listById.request(id, status))
     }, [dispatch, id, status])
+
+    const changeStatus = useCallback((id, status) => {
+        dispatch(actions.listById.change(id, status))
+    }, [dispatch, id, status])
+
+    useEffect(() => {
+        callForData()
+    }, [dispatch, id, status])
+
     return (
         <Container>
                 <User id={id}/>
@@ -47,13 +57,13 @@ const Index = () => {
                         color: '#fefae0'
                     }}
                     onChange={setStatus}>
-                    <TabPane tab={'All'} key={''} />
-                    <TabPane tab={Status.Pending} key={Status.Pending} />
-                    <TabPane tab={Status.Approved} key={Status.Approved}/>
-                    <TabPane tab={Status.Rejected} key={Status.Rejected}/>
+                    <TabPane tab={'ყველა'} key={''} />
+                    <TabPane tab={'განუხილავი'} key={Status.Pending} />
+                    <TabPane tab={'დადასტურებული'} key={Status.Approved}/>
+                    <TabPane tab={'უარჯოფილი'} key={Status.Rejected}/>
                 </Tabs>
                 {
-                    rows && <TableComponent data={rows} />
+                    rows && <TableComponent data={rows} changeStatus={changeStatus}/>
                 }
             </Container>
     );
