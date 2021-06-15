@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import '../../App.css';
 import styled from "styled-components";
 import TableComponent from './table'
-import {Tabs} from "antd";
+import {Button, Tabs} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {actions, selectors} from "../../modules/Documents";
 import qs from "qs";
@@ -12,6 +12,8 @@ import {
     useLocation
 } from "react-router-dom";
 import {stat} from 'node:fs';
+import {LeftOutlined, RightOutlined} from "@ant-design/icons";
+import {totalSize} from "../../adapters/users";
 
 const {TabPane} = Tabs;
 
@@ -28,6 +30,19 @@ enum Status {
     Approved = 'Approved',
     Rejected = 'Rejected',
 }
+
+
+const Centered = styled.div`
+  width: 80%;
+  display: flex;
+  margin: auto;
+  justify-content: flex-end;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3rem;
+`;
 
 const Index = () => {
     const {search} = useLocation()
@@ -46,6 +61,12 @@ const Index = () => {
 
     const activeKey: string = useMemo(() => status?.toString() || '', [status])
 
+
+    const callMore = useCallback((id: string) => () => {
+        dispatch(actions.list.request(status, id))
+    }, [status])
+
+
     const callForData = useCallback(() => {
         dispatch(actions.list.request(status))
     }, [status])
@@ -57,7 +78,9 @@ const Index = () => {
     useEffect(() => {
         callForData()
     }, [dispatch, status])
+
     return (
+        <>
         <Container>
             <Tabs
                 tabBarStyle={{
@@ -74,6 +97,12 @@ const Index = () => {
                 rows && <TableComponent data={rows} changeStatus={changeStatus} withLink/>
             }
         </Container>
+        <Centered>
+                <Button onClick={callMore(rows[rows.length - 1])}>
+                    მეტი
+                </Button>
+        </Centered>
+        </>
     );
 }
 
