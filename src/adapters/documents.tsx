@@ -37,19 +37,16 @@ export const takeDocumentsWithFilters = (userId: string = '', status: string) =>
 }
 
 export const takeDocuments = (status: string, obj: any) => {
-    console.log('lolo', obj, status);
-    let query = COLLECTION.limit(5)
-    if(obj) {
-        query = query
-            .startAfter(obj.createdAt)
-            .limit(5)
-    }
+    let query = COLLECTION.orderBy('createdAt')
     if (status){
-        query = query
-            .where("status", "==", status)
-            .limit(5)
+        query = query.where("status", "==", status)
     }
-    return query.get().then((r) => r.docs).catch(() => console.log('ერორი'))
+    if(obj) {
+        query = query .startAfter(obj.createdAt)
+    }
+    return query.limit(5).get()
+        .then((r) => r.docs)
+        .catch(() => console.log('ერორი'))
 }
 
 interface SendDataTypes  {
