@@ -40,6 +40,20 @@ const reducer =
                     },
                     data: getProp(() => action.payload.response.data, [])
                 }
+            case constants.LIST_SUCCEEDED_2:
+                return {
+                    ...state,
+                    statuses: {
+                        isStarted: false,
+                        isPending: false,
+                        isFinished: true,
+                        isSucceed: true
+                    },
+                    data: [
+                        ...state.data,
+                        ...getProp(() => action.payload.response.data, [])
+                    ]
+                }
             case constants.LIST_FAILED:
                 return {
                     ...initialState,
@@ -70,11 +84,11 @@ const reducer =
                 return state
         }
     }
-const conf = {
-    key: 'list.of.documents',
-    storage
-}
+// const conf = {
+//     key: 'list.of.documents',
+//     storage
+// }
+//
+// const persistentReducer = persistReducer(conf, reducer)
 
-const persistentReducer = persistReducer(conf, reducer)
-
-export default persistentReducer
+export default reducer

@@ -315,7 +315,7 @@ const StudentsTable = () => {
           <Button onClick={goPrev} disabled={page === 1}>
             <LeftOutlined twoToneColor="#f5222d" />
           </Button>
-          <Button onClick={goNext} disabled={page * size >= totalSize}>
+          <Button onClick={goNext} >
             <RightOutlined twoToneColor="#f5222d" />
           </Button>
         </div>

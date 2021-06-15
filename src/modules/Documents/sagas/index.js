@@ -19,14 +19,20 @@ export function* getListById(action) {
 
 export function* getList(action) {
     try {
-        const querySnapshot = yield call(takeDocuments, action.payload.status)
+        const querySnapshot = yield call(takeDocuments, action.payload.status, action.payload.id)
         const data = []
         querySnapshot.forEach((snapshot) => {
             data.push(snapshot.data())
         })
-        yield put(actions.list.success({
-            data
-        }))
+        if(action.payload.id) {
+            yield put(actions.list.success_2({
+                data
+            }))
+        }else {
+            yield put(actions.list.success({
+                data
+            }))
+        }
     } catch (e) {
         const {response, message} = e
         yield put(actions.list.failure(response, message))
