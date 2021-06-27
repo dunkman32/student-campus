@@ -11,13 +11,10 @@ export const removeMessage = (id: string) => {
 
 
 interface DataType {
-    id: string
-    uid: string,
-    text: string,
-    photo: string,
+    comment: string,
+    userId: string,
+    documentId: string,
     createdAt: number,
-    displayName: string,
-    file?: string
 }
 
 export const useMessagesStream = () => {
@@ -25,13 +22,15 @@ export const useMessagesStream = () => {
     return useCollectionData<DataType>(query, {idField: 'id'})[0]
 }
 
-interface SendDataTypes  {
-    uid: string,
-    text: string,
-    photo: string,
-    createdAt: number,
-    user: string,
+interface CommentType  {
+    comment: string,
+    userId: string,
+    documentId: string,
 }
 
-export const addComment = (data: SendDataTypes) => COLLECTION.add(data)
+export const addComment = (data: CommentType) => COLLECTION.add({
+    ...data,
+    status: 'new',
+    createdAt: new Date().getTime()
+})
 

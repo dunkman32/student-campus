@@ -1,23 +1,33 @@
-import {Fragment, useState} from 'react';
-import {Button, Form, Input, Modal} from 'antd';
-import {UploadOutlined} from '@ant-design/icons';
+import {useState} from 'react';
+import {Form, Input, message as notification, Modal} from 'antd';
 import {addComment} from '../../../adapters/comments';
 import {handleRemove} from "../../../adapters/documents";
 
 const {TextArea} = Input;
 
-const AddComment = ({documentId, user, open, close}: any) => {
+const AddComment = ({document, open, close, changeStatus}: any) => {
     const [form] = Form.useForm();
     const [confirmLoading, setConfirmLoading] = useState(false);
 
-    const onCreate = (values: any) => {
-        if (values.comment) {
+    const onCreate = ({comment}: any) => {
+        if (comment) {
             setConfirmLoading(true);
-            addComment(values.comment).then(() => {
-                handleRemove(documentId)
-                    .then(() => {})
-                    .catch(() => {})
-            }).catch(() => {
+            addComment({
+                comment,
+                userId: document.userId,
+                documentId: document.id
+            }).then(() => {
+                handleRemove(document).then(() => {
+                    changeStatus(document.id, 'Rejected')
+                    notification.success('დოკუმენტი მოინიშნა გაუქმებულად')
+                    close()
+                }).catch((e) => {
+                    notification.error('დოკუმენტის სტატუსის ცვლილება ვერ მოხერხდა')
+                })
+            }).catch((e) => {
+                notification.error('დოკუმენტის სტატუსის ცვლილება ვერ მოხერხდა')
+            }).finally(() => {
+                setConfirmLoading(false)
             })
         } else return null;
     };
@@ -34,34 +44,35 @@ const AddComment = ({documentId, user, open, close}: any) => {
     };
 
     return (
-            <Modal
-                okText={'ატვირთვა'}
-                cancelText={'დახურვა'}
-                title="დოკუმენტის ატვირვა"
-                centered
-                visible={open}
-                onOk={onSubmit}
-                confirmLoading={confirmLoading}
-                onCancel={() => {
-                    close();
-                    form.resetFields()
-                }}
-                width={700}>
-                <Form
-                    form={form}
-                    labelCol={{span: 4}}
-                    wrapperCol={{span: 14}}
-                    layout="horizontal"
+        <Modal
+            okText={'დოკუმენტის უარყოფა'}
+            cancelText={'დახურვა'}
+            title="დოკუმენტის უარყოფა"
+            centered
+            visible={open}
+            onOk={onSubmit}
+            confirmLoading={confirmLoading}
+            onCancel={() => {
+                close();
+                form.resetFields()
+                setConfirmLoading(false)
+            }}
+            width={700}>
+            <Form
+                form={form}
+                labelCol={{span: 4}}
+                wrapperCol={{span: 14}}
+                layout="horizontal"
+            >
+                <Form.Item
+                    name={'comment'}
+                    label="კომენტარი"
+                    rules={[{required: true, message: 'შეიყვანეთ კომენტარი'}]}
                 >
-                    <Form.Item
-                        name={'comment'}
-                        label="კომენტარი"
-                        rules={[{required: true, message: 'შეიყვანეთ კომენტარი'}]}
-                    >
-                        <TextArea showCount maxLength={256} placeholder={'შეიყვანეთ კომენტარი...'}/>
-                    </Form.Item>
-                </Form>
-            </Modal>
+                    <TextArea showCount maxLength={256} placeholder={'შეიყვანეთ კომენტარი...'}/>
+                </Form.Item>
+            </Form>
+        </Modal>
     );
 };
 

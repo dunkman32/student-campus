@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {format, isValid} from "date-fns";
 import ImagePopup from "./image-popup";
 import {Img, StyledTable} from "./styles";
-import {Button, Popconfirm, Tag} from "antd";
+import {Button, message as notification, Popconfirm, Tag} from "antd";
 import {SmileTwoTone, MehTwoTone} from "@ant-design/icons";
-import {handleApprove} from "../../adapters/documents";
+import {handleApprove, handleRemove} from "../../adapters/documents";
 import {useHistory} from "react-router-dom";
 import AddComment from "./Reject";
 
@@ -45,32 +45,39 @@ const generateTagColor = (status: Status) => {
 const TableComponent = ({
                             data,
                             withLink,
+                            changeStatus,
                         }: {
     data: Row[];
     withLink?: boolean;
+    changeStatus: (id: number, status: string) => void;
 }) => {
     const history = useHistory();
     const [commentModal, setCommentModal] = useState({
-        user: null,
-        documentId: null,
+        document: null,
         open: false
     })
 
     const handleCloseCommentModal = () => {
         setCommentModal({
-            user: null,
-            documentId: null,
+            document: null,
             open: false
         })
     }
 
     const handleOpenCommentModal = (data: any) => {
         setCommentModal({
-            user: data.user,
-            documentId: data.documentId,
+            document: data,
             open: true
         })
     }
+    const approve = useCallback((row) => () => {
+        handleApprove(row).then(() => {
+            changeStatus(row.id, 'Approved')
+            notification.success('დოკუმენტი მოინიშნა გადახდილად')
+        }).catch(() => {
+            notification.error('დოკუმენტის სტატუსის ცვლილება ვერ მოხერხდა')
+        })
+    }, [])
 
     const columns = [
         {
@@ -124,38 +131,33 @@ const TableComponent = ({
             dataIndex: "createdAt",
             key: "createdAt",
             width: "10%",
-            render: (_: any, row: any) => <span>{formatDate(row.createdAt)}</span>,
+            render: (_: any, row: any) =>
+                <span>{formatDate(row.createdAt)}</span>,
         },
         {
             title: "Action",
             dataIndex: "action",
             key: "action",
             width: "10%",
-            render: (_: any, row: any) => {
-                console.log(_, row, 'eeee')
-
-                return (
-                    <>
-                        <Popconfirm
-                            key={`approve_${row.id}`}
-                            title="Sure to approve?"
-                            onConfirm={() => handleApprove(row)}
-                        >
-                            <SmileTwoTone style={{fontSize: "1.5rem"}} twoToneColor='#52c41a'/>
-                        </Popconfirm>
-                        <Popconfirm
-                            key={`reject_${row.id}`}
-                            title="Sure to remove?"
-                            onConfirm={() => handleOpenCommentModal({
-                                user: row.userId,
-                                documentId: row.id
-                            })}
-                        >
-                            <MehTwoTone style={{fontSize: "1.5rem", marginLeft: '.325rem'}} twoToneColor="#f5222d"/>
-                        </Popconfirm>
-                    </>
-                )
-            },
+            render: (_: any, row: any) => (
+                <>
+                    <Popconfirm
+                        key={`approve_${row.id}`}
+                        title="Sure to approve?"
+                        onConfirm={approve(row)}
+                    >
+                        <SmileTwoTone style={{fontSize: "1.5rem"}}
+                                      twoToneColor='#52c41a'/>
+                    </Popconfirm>
+                    <Popconfirm
+                        key={`reject_${row.id}`}
+                        title="Sure to remove?"
+                        onConfirm={() => handleOpenCommentModal(row)}
+                    >
+                        <MehTwoTone style={{fontSize: "1.5rem", marginLeft: '.325rem'}} twoToneColor="#f5222d"/>
+                    </Popconfirm>
+                </>
+            ),
         },
     ];
 
@@ -189,7 +191,7 @@ const TableComponent = ({
                 columns={columns}
                 pagination={false}
             />
-            <AddComment {...commentModal} close={handleCloseCommentModal}/>
+            <AddComment {...commentModal} close={handleCloseCommentModal} changeStatus={changeStatus}/>
         </>
     );
 };
