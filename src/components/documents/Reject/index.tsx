@@ -14,6 +14,7 @@ const AddComment = ({document, open, close, changeStatus}: any) => {
             setConfirmLoading(true);
             addComment({
                 comment,
+                file: document.file,
                 userId: document.userId,
                 documentId: document.id
             }).then(() => {

@@ -26,6 +26,7 @@ interface CommentType  {
     comment: string,
     userId: string,
     documentId: string,
+    file: string,
 }
 
 export const addComment = (data: CommentType) => COLLECTION.add({
