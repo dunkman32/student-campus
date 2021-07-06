@@ -129,7 +129,7 @@ const AddModal = ({ student, callTake }: { student?: any; callTake?: any }) => {
           wrapperCol={{ span: 14 }}
           layout="horizontal"
         >
-          <Form.Item name={"email"} label="email">
+          <Form.Item name={"email"} label="ელ-ფოსტა">
             <Input />
           </Form.Item>
           <Form.Item name={"name"} label="სახელი, გვარი">
