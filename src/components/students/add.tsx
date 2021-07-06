@@ -154,7 +154,7 @@ const AddModal = ({ student, callTake }: { student?: any; callTake?: any }) => {
           <Form.Item name={"birth"} label="დაბადებული">
             <DatePicker disabled={isEdit} />
           </Form.Item>
-          <Form.Item name={"file"} label="file">
+          <Form.Item name={"file"} label="სურათი">
             <input type="file" onChange={change} />
           </Form.Item>
         </Form>
