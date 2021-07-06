@@ -9,7 +9,6 @@ export const removeMessage = (id: string) => {
     return COLLECTION.doc(id).delete()
 }
 
-
 interface DataType {
     id: string
     uid: string,

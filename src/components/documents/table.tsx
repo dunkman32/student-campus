@@ -167,8 +167,6 @@ const TableComponent = ({
         },
     ];
 
-    console.log(data, 'sss');
-
     const renderColor = (status: Status) => {
         switch (status) {
             case Status.Approved:

@@ -61,7 +61,6 @@ interface SendDataTypes  {
 
 export const sendMessage = (data: SendDataTypes) => COLLECTION.add(data)
 export const handleApprove = (data: SendDataTypes) => {
-    console.log(data, 'handleApprove')
     let prod = COLLECTION.doc(data.id)
     return prod.update({
         ...data,
@@ -69,7 +68,6 @@ export const handleApprove = (data: SendDataTypes) => {
     })
 }
 export const handleRemove = (data: SendDataTypes) => {
-    console.log(data, 'handleRemove')
     let prod = COLLECTION.doc(data.id)
     return prod.update({
         ...data,
