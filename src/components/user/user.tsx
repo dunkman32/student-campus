@@ -13,13 +13,13 @@ const Index = ({id}: T) => {
     useEffect(() => {
         dispatch(actions.getUserById.request(id))
     }, [dispatch])
-    console.log(user);
+
     return user && (<InfoDiv>
         <Photo src={user.img} alt={'მომხმარებელი'}/>
         <>
             <Username>{user.name}</Username>
             <Info>ელ. ფოსტა: {user.email}</Info>
-            <Info>ჯორპ: {user.campus} / ოთახი: {user.no}</Info>
+            <Info>კორპ: {user.campus} / ბინა: {user.no}</Info>
             <Info>პირადი ნო: {user.idNumber}</Info>
         </>
     </InfoDiv>);
