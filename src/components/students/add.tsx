@@ -21,7 +21,6 @@ const AddModal = ({ student, callTake }: { student?: any; callTake?: any }) => {
   const [file, setFile] = useState(null);
 
   const onCreate = (values: any) => {
-    setVisible(false);
     if (isEdit) {
       callTake();
       update({
@@ -72,7 +71,9 @@ const AddModal = ({ student, callTake }: { student?: any; callTake?: any }) => {
         .catch((err) => {
           console.log(err);
           notification.error('დამატება ვერ მოხერხდა')
-        });
+        }).finally(() => {
+        setVisible(false);
+      })
     },
     [file]
   );
@@ -86,7 +87,9 @@ const AddModal = ({ student, callTake }: { student?: any; callTake?: any }) => {
       })
       .catch((e) => {
         console.log(e, "denied");
-      });
+      }).finally(() => {
+      setVisible(false);
+    })
   }, []);
 
   const change = (e: any) => {
