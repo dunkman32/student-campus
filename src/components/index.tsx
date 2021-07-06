@@ -14,7 +14,6 @@ import Footer from "./Footer";
 import User from "./user";
 import styled from "styled-components";
 
-
 const Div = styled.div`
   display: flex;
   min-height: 100vh;
@@ -27,37 +26,44 @@ const Components = () => {
     const user = useSelector(selectors.selectUser)
     useEffect(() => {
         auth.onAuthStateChanged((user: any) => {
-            if(user) {
+            if (user) {
                 const tmpUser = {
                     ...user.providerData[0],
                     id: user.uid
                 }
                 readUserById(user.uid).then((r) => {
-                    dispatch(actions.user.add({
-                        ...tmpUser,
-                        ...r.data()
-                    }))
+                    const usrFromBase: any = r.data()
+                    if (usrFromBase?.role !== 'student') {
+                        dispatch(actions.user.add({
+                            ...tmpUser,
+                            ...usrFromBase
+                        }))
+                    } else {
+                        dispatch(actions.user.add({}))
+                    }
                 }).catch((e) => console.log(e))
             }
         });
     }, [dispatch]);
 
 
-    return user ? (
+
+
+    return user && user.uid ? (
             <Router>
-               <Div>
-                   <div>
-                       <Header/>
-                       <Switch>
-                           <Route path="/" exact component={Main} />
-                           <Route path="/user/:id" exact component={User} />
-                           <Route path="/documents" exact component={Documents} />
-                           <Route path="/documents/:id" exact component={ListById} />
-                           <Route path="/chat" exact component={Chat} />
-                       </Switch>
-                   </div>
-                   <Footer />
-               </Div>
+                <Div>
+                    <div>
+                        <Header/>
+                        <Switch>
+                            <Route path="/" exact component={Main}/>
+                            <Route path="/user/:id" exact component={User}/>
+                            <Route path="/documents" exact component={Documents}/>
+                            <Route path="/documents/:id" exact component={ListById}/>
+                            <Route path="/chat" exact component={Chat}/>
+                        </Switch>
+                    </div>
+                    <Footer/>
+                </Div>
             </Router>
         ) :
         (<SignIn/>)
