@@ -23,6 +23,7 @@ interface DataType {
     photo: string,
     createdAt: number,
     displayName: string,
+    tel: string,
 }
 
 export const useStudentsStream = (limit: number = 25, first: any, last: any) => {
@@ -97,7 +98,8 @@ interface Students {
     campus: string,
     birth: string,
     createdAt: number,
-    file: any
+    file: any,
+    tel: string
 }
 
 export const takeImg = (id: string) => {
@@ -124,7 +126,6 @@ export const addUserWithEmail = async (student: Students) => {
             img
         }
         const savedUsr = await COLLECTION.doc(uid).set(userOBJ)
-        console.log(img, savedUsr, 'auth')
         return savedUsr
     } catch (e) {
         console.log(e)

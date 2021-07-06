@@ -55,7 +55,7 @@ const generateTagColor = (tag) => {
   }
 };
 
-const size = 100;
+const size = 25;
 const StudentsTable = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
@@ -225,14 +225,20 @@ const StudentsTable = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "20%",
+      width: "13%",
       ...getColumnSearchProps("name"),
+    },
+    {
+      title: "tel",
+      dataIndex: "tel",
+      key: "tel",
+      width: "12%",
     },
     {
       title: "ID",
       dataIndex: "idNumber",
       key: "idNumber",
-      width: "15%",
+      width: "10%",
     },
     {
       title: "No",

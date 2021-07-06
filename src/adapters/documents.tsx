@@ -21,6 +21,7 @@ interface DataType {
     file: any,
     desc: string,
     createdAt: number
+    month: number
 }
 
 export const useMessagesStream = () => {

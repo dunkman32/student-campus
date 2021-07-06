@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, {useCallback, useMemo} from "react";
 import styled from "styled-components";
 import { Badge, Button, Input, Space, Tooltip } from "antd";
 import { useMessagesStream } from "../../adapters/documents";
@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 import logo from '../../static/images/logo.png'
 const { Search } = Input;
+const size = 25;
 
 const StyledSearch = styled(Search)`
   min-width: 200px;
@@ -76,7 +77,13 @@ const Header = () => {
 
   const renderType = useMemo(() => pathname.includes("documents"), [pathname]);
   const pendings = useMessagesStream();
-
+  const callTake = useCallback(() => {
+    dispatch(
+        actions.get.request({
+          limit: size,
+        })
+    );
+  }, [dispatch]);
   return (
     <HeaderContainer>
       <LeftSide>
@@ -112,7 +119,7 @@ const Header = () => {
               enterButton
             />
           )}
-          <AddModal />
+          <AddModal callTake={callTake}/>
           <Tooltip title="განსახილი დოკუმენტები" placement="bottom">
             <Link to={"/documents?status=Pending"}>
               <Badge count={pendings?.length}>

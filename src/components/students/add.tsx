@@ -4,7 +4,7 @@ import {
   DatePicker,
   Form,
   Input,
-  InputNumber,
+  InputNumber, message as notification,
   Modal,
   Select,
   Tooltip,
@@ -66,10 +66,13 @@ const AddModal = ({ student, callTake }: { student?: any; callTake?: any }) => {
         createdAt: new Date().getTime(),
       };
       addUserWithEmail(student)
-        .then((usr) => {
-          console.log(usr, "success");
+        .then(() => {
+          callTake()
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          notification.error('დამატება ვერ მოხერხდა')
+        });
     },
     [file]
   );
@@ -130,6 +133,9 @@ const AddModal = ({ student, callTake }: { student?: any; callTake?: any }) => {
             <Input />
           </Form.Item>
           <Form.Item name={"idNumber"} label="პირადი ნომერი">
+            <Input />
+          </Form.Item>
+          <Form.Item name={"tel"} label="ტელეფონი">
             <Input />
           </Form.Item>
           <Form.Item name={"no"} label="ბინა">

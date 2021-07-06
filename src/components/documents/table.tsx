@@ -21,6 +21,7 @@ interface Row {
     desc: string;
     createdAt: number;
     status?: Status;
+    month: number
 }
 
 const formatDate = (d: number) => {
@@ -104,10 +105,15 @@ const TableComponent = ({
             width: "10%",
         },
         {
-            title: "User Id",
-            dataIndex: "userId",
-            key: "userId",
+            title: "month",
+            dataIndex: "month",
+            key: "month",
             width: "10%",
+            render: (_: any, row: any) => (
+               <span>
+                   {monthRenderer(row.month)}
+               </span>
+            ),
         },
         {
             title: "campus",
@@ -195,5 +201,36 @@ const TableComponent = ({
         </>
     );
 };
+
+const monthRenderer = (m: number) => {
+    switch (m) {
+        case 0:
+            return 'იანვარი'
+        case 1:
+            return 'თებერვალი'
+        case 2:
+            return 'მარტი'
+        case 3:
+            return 'აპრილი'
+        case 4:
+            return 'მაისი'
+        case 5:
+            return 'ივნისი'
+        case 6:
+            return 'ივლისი'
+        case 7:
+            return 'აგვისტო'
+        case 8:
+            return 'სექტემბერი'
+        case 9:
+            return 'ოქტომბერი'
+        case 10:
+            return 'ნოემბერი'
+        case 11:
+            return 'დეკემბერი'
+        default:
+            return '-'
+    }
+}
 
 export default TableComponent;
