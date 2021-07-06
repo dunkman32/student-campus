@@ -38,8 +38,6 @@ const Components = () => {
                             ...tmpUser,
                             ...usrFromBase
                         }))
-                    } else {
-                        dispatch(actions.user.add({}))
                     }
                 }).catch((e) => console.log(e))
             }
